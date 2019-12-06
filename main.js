@@ -1,13 +1,12 @@
-var xmen = 17;
+var xmen = 20;
 function testClick() {
     document.getElementById("span").innerHTML = xmen;
 }
 
 function buttonSwitch() {
   document.getElementById("buttonImg").innerHTML = document.getElementById("rotatingArrow.gif");
-  document.getElementById("buttonImg2").innerHTML = document.getElementById("arrow.png");
-  document.getElementById("buttonImg3").innerHTML = document.getElementById("rotatingArrow.gif");
-  
+  document.getElementById("buttonImg2") = document.getElementById("arrow.png");
+  document.getElementById("buttonImg3").innerHTML = "PLORP"
   
 }
 

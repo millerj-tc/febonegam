@@ -4,8 +4,8 @@ function testClick() {
 }
 
 function buttonSwitch() {
-  document.getElementById("buttonImg").innerHTML = document.getElementById("rotatingArrow.gif");
-  document.getElementById("buttonImg2") = document.getElementById("arrow.png");
+  //document.getElementById("buttonImg").innerHTML = document.getElementById("rotatingArrow.gif");
+  //document.getElementById("buttonImg2") = document.getElementById("arrow.png");
   document.getElementById("buttonImg3").innerHTML = "PLORP";
   
 }

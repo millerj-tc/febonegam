@@ -1,4 +1,4 @@
-var xmen = 545;
+var xmen = 547;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";
@@ -7,10 +7,12 @@ function testClick() {
 }
 
 function buttonSwitch() {
-  if( document.getElementById("buttonImg").innerHTML = "<img src='arrow.png'>") {
+  console.log(document.getElementById("buttonImg").innerHTML);
+  if(document.getElementById("buttonImg").innerHTML = "<img src='arrow.png'>") {
     document.getElementById("buttonImg").innerHTML =  "<img src='rotatingArrow.gif'>";      
   }
-  if( document.getElementById("buttonImg").innerHTML = "<img src='rotatingArrow.gif'>") {
+  else {
+    console.log("elsed");
     document.getElementById("buttonImg").innerHTML =  "<img src='arrow.png'>";      
   }
   

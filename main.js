@@ -3,6 +3,10 @@ function testClick() {
     document.getElementById("span").innerHTML = xmen;
 }
 
+function buttonSwitch() {
+  document.getElementById("buttonImg").innerHTML = <img src="rotatingArrow.gif">;  
+}
+
 var i = 0;
 function move() {
   if (i == 0) {

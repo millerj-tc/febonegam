@@ -23,7 +23,7 @@ function move() {
   }
 }
 
-window.setInterval(report, 1000);
+//window.setInterval(report, 1000);
 
 function report() {
     console.log("~~~");

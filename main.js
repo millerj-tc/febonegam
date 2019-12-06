@@ -20,4 +20,13 @@ function move() {
       }
     }
   }
-} 
+}
+
+window.setInterval(report, 1000);
+
+function report() {
+    console.log("~~~")
+    console.log(elem)
+    console.log(width)
+    console.log(i)
+}

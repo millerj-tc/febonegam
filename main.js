@@ -38,6 +38,6 @@ var count = 0;
 window.setInterval(report, 1000);
 
 function report() {
-    count = count + 1
+    count = count + 1;
     document.getElementById("count").innerHTML = count;
 }

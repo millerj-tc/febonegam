@@ -5,7 +5,7 @@ function testClick() {
 
 function buttonSwitch() {
   //document.getElementById("buttonImg").innerHTML = document.getElementById("rotatingArrow.gif");
-  document.getElementById("buttonImg2") = "<img src="arrow.png">";
+  //document.getElementById("buttonImg2") = "<img src="arrow.png">";
   document.getElementById("buttonImg3").innerHTML = "PLORP";
   
 }

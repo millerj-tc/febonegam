@@ -1,4 +1,4 @@
-var xmen = 1258;
+var xmen = 528;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttomImg3").innerHTML = "<img src='arrow.png'>";
@@ -33,11 +33,11 @@ function move() {
   }
 }
 
-//window.setInterval(report, 1000);
+var count = 0;
+
+window.setInterval(report, 1000);
 
 function report() {
-    console.log("~~~");
-    //console.log(elem);
-    //console.log(width);
-    console.log(i);
+    count = count + 1
+    document.getElementById("count").innerHTML = count;
 }

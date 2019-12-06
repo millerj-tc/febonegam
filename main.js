@@ -4,7 +4,7 @@ function testClick() {
 }
 
 function buttonSwitch() {
-  document.getElementById("buttonImg").innerHTML = <img src="rotatingArrow.gif">;  
+  document.getElementById("buttonImg").innerHTML = document.getElementById("rotatingArrow.gif");  
 }
 
 var i = 0;

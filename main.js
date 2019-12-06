@@ -1,4 +1,6 @@
 var xmen = 1233;
+window.onload = document.getElementById("span").innerHTML = xmen;
+window.onload = document.getElementById("buttonImg2") = "<img src='rotatingArrow.gif' class='mark'>";
 function testClick() {
     document.getElementById("span").innerHTML = xmen;
 }

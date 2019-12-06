@@ -8,6 +8,7 @@ function move() {
   if (i == 0) {
     i = 1;
     var elem = document.getElementById("myBar");
+    console.log("?" + String(elem));
     var width = 1;
     var id = setInterval(frame, 10);
     function frame() {
@@ -25,8 +26,8 @@ function move() {
 window.setInterval(report, 1000);
 
 function report() {
-    console.log("~~~")
-    console.log(elem)
-    console.log(width)
-    console.log(i)
+    console.log("~~~");
+    console.log(elem);
+    console.log(width);
+    console.log(i);
 }

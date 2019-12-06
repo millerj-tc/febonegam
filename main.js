@@ -1,4 +1,4 @@
-var xmen = 7;
+var xmen = 16;
 function testClick() {
     document.getElementById("span").innerHTML = xmen;
 }

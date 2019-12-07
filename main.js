@@ -1,4 +1,4 @@
-var xmen = 604;
+var xmen = 605;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";
@@ -6,7 +6,7 @@ function testClick() {
     document.getElementById("span").innerHTML = xmen;
 }
 
-var buttonRotation =  0
+var buttonRotation = 0;
 
 function buttonSwitch() {
   console.log("Wait for it, button Rotation " + String(buttonRotation));

@@ -1,4 +1,4 @@
-var xmen = 641;
+var xmen = 642;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";
@@ -12,7 +12,7 @@ function buttonSwitch() {
   if (buttonRotation == 0) {
       buttonRotation = 1;
       document.getElementById("buttonImg").innerHTML =  "<button class='button' onclick='buttonSwitch()'><img src='rotatingArrow.gif'></button>";
-      var buttonTimer = window.setInterval(resetButton, 800)
+      var buttonTimer = window.setInterval(resetButton, 810)
       } 
     
  function resetButton() {

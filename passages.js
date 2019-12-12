@@ -8,7 +8,9 @@ class Passage {
         }
 }
 
-var grigory = new Passage(0, "Grigory was a shit", []);
+var passage0 = new Passage(0, "Grigory was a penguin", passage1);
+var passage1 = new Passage(1, "...but he was also a very big lion.", passage2)
+
 
 var wings = "rando";
 window.onload = document.getElementById("passages").innerHTML = "added Passages class";

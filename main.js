@@ -1,4 +1,4 @@
-PASSAGES
+//PASSAGES
 class Passage {
     constructor(storyID, text, progressbuttons) {
         
@@ -17,7 +17,7 @@ class Passage {
 
 //passages[0] = 
 
-var xmen = Brick;
+var xmen = "Brick";
 window.onload = document.getElementById("main").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";

@@ -1,13 +1,13 @@
 //PASSAGES
-class Passage {
-    constructor(storyID, text, progressbuttons) {
+//class Passage {
+//    constructor(storyID, text, progressbuttons) {
         
-        this.storyID = storyID;
-        this.text = text;
-       this.progressbuttons = progressbuttons;
+//        this.storyID = storyID;
+ //       this.text = text;
+  //     this.progressbuttons = progressbuttons;
         
-    }
-}
+ //   }
+//}
 
 //import { wings } from 'passages';
 

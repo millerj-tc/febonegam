@@ -8,13 +8,12 @@
 
 //passages[0] = 
 
-var xmen = "Removed passages class";
+var currentPassage = passage0;
+
+var xmen = "added next passage functionality";
 window.onload = document.getElementById("main").innerHTML = xmen;
-window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
-window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";
-function testClick() {
-    document.getElementById("span").innerHTML = xmen;
-}
+window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage;
+
 
 var buttonRotation = 0;
 
@@ -23,6 +22,8 @@ function buttonSwitch() {
       buttonRotation = 1;
       document.getElementById("buttonImg").innerHTML =  "<button class='button' onclick='buttonSwitch()'><img src='rotatingArrow.gif'></button>";
       var buttonTimer = window.setInterval(resetButton, 805)
+      currentPassage = currentPassage.progessbuttons;
+      document.getElementById("passageDisplay").innerHTML = currentPassage;
       } 
     
  function resetButton() {

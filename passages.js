@@ -1,10 +1,10 @@
 //PASSAGES
 class Passage {
-    constructor(storyID, text, progressbuttons) {
+    constructor(passageStoryID, passageText, passageLinks) {
         
-        this.storyID = storyID;
-        this.text = text;
-      this.progressbuttons = progressbuttons;
+        this.storyID = passageStoryID;
+        this.text = passageText;
+      this.progressbuttons = passageLinks;
         }
         get text() {
             return this.text;   
@@ -14,8 +14,8 @@ class Passage {
         }
 }
 
-passage0 = new Passage(0, "Grigory was a penguin", 0);
-//passage1 = new Passage(1, "...but he was also a very big lion.", passage2);
+passage0 = new Passage(0, "Grigory was a penguin", passage1);
+passage1 = new Passage(1, "...but he was also a very big lion.", passage2);
 //passage2 = new Passage(2, "Practical.", passage3);
 //passage3 = new Passage(3, "Perfect.", passage4);
 

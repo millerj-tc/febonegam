@@ -6,10 +6,10 @@ class Passage {
         this.text = text;
       this.progressbuttons = progressbuttons;
         }
-        text() {
+        get text() {
             return this.text;   
         }
-        progressbuttons() {
+        get progressbuttons() {
             return this.progressbuttons;   
         }
 }

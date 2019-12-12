@@ -14,7 +14,7 @@ class Passage {
         }
 }
 
-//passage0 = new Passage(0, "Grigory was a penguin", 0);
+passage0 = new Passage(0, "Grigory was a penguin", 0);
 //passage1 = new Passage(1, "...but he was also a very big lion.", passage2);
 //passage2 = new Passage(2, "Practical.", passage3);
 //passage3 = new Passage(3, "Perfect.", passage4);

@@ -19,7 +19,7 @@ tempPassID = 0;
 tempPassText = "test1";
 tempPassButt = [];
 
-new Passage(tempPassID, tempPassText, tempPassButt)
+//new Passage(tempPassID, tempPassText, tempPassButt)
 
 //passages
 

@@ -6,12 +6,18 @@ class Passage {
         this.text = text;
       this.progressbuttons = progressbuttons;
         }
+        text() {
+            return this.text;   
+        }
+        progressbuttons() {
+            return this.progressbuttons;   
+        }
 }
 
-passage0 = new Passage(0, "Grigory was a penguin", passage1);
-passage1 = new Passage(1, "...but he was also a very big lion.", passage2);
-passage2 = new Passage(2, "Practical.", passage3);
-passage3 = new Passage(3, "Perfect.", passage4);
+//passage0 = new Passage(0, "Grigory was a penguin", passage1);
+//passage1 = new Passage(1, "...but he was also a very big lion.", passage2);
+//passage2 = new Passage(2, "Practical.", passage3);
+//passage3 = new Passage(3, "Perfect.", passage4);
 
 
 var wings = "rando";

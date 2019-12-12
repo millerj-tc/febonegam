@@ -25,7 +25,7 @@ tempPassButt = [];
 
 //passages[0] = 
 
-var xmen = wings;
+var xmen = 1;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";

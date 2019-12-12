@@ -11,14 +11,6 @@
 
 //import { wings } from 'passages';
 
-var tempPassID = -1;
-var tempPassText = "";
-var tempPassButt = [];
-
-tempPassID = 0;
-tempPassText = "test1";
-tempPassButt = [];
-
 //new Passage(tempPassID, tempPassText, tempPassButt)
 
 //passages

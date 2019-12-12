@@ -1,3 +1,28 @@
+//PASSAGES
+class Passage {
+    constructor(storyID, text, progressbuttons) {
+        
+        this.storyID = storyID;
+        this.text = text;
+        this.progressbuttons = progressbuttons;
+        
+    }
+}
+
+var tempPassID = -1;
+var tempPassText = "";
+var tempPassButt = [];
+
+tempPassID = 0;
+tempPassText = "test1";
+tempPassButt = [];
+
+new Passage(tempPassID, tempPassText, tempPassButt)
+
+//passages
+
+passages[0] = 
+
 var xmen = 643;
 window.onload = document.getElementById("span").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";

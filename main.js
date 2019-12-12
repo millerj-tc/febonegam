@@ -1,13 +1,13 @@
-//PASSAGES
-//class Passage {
- //   constructor(storyID, text, progressbuttons) {
+PASSAGES
+class Passage {
+    constructor(storyID, text, progressbuttons) {
         
-//        this.storyID = storyID;
-//        this.text = text;
- //       this.progressbuttons = progressbuttons;
+        this.storyID = storyID;
+        this.text = text;
+       this.progressbuttons = progressbuttons;
         
- //   }
-//}
+    }
+}
 
 //import { wings } from 'passages';
 
@@ -17,8 +17,8 @@
 
 //passages[0] = 
 
-var xmen = wings;
-window.onload = document.getElementById("span").innerHTML = xmen;
+var xmen = Brick;
+window.onload = document.getElementById("main").innerHTML = xmen;
 window.onload = document.getElementById("buttonImg2").innerHTML = "<img src='rotatingArrow.gif' class='mark'>";
 window.onload = document.getElementById("buttonImg3").innerHTML = "<img src='arrow.png'>";
 function testClick() {

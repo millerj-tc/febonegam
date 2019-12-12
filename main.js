@@ -9,7 +9,7 @@ class Passage {
     }
 }
 
-import { wings } from 'passages';
+//import { wings } from 'passages';
 
 var tempPassID = -1;
 var tempPassText = "";
@@ -23,7 +23,7 @@ new Passage(tempPassID, tempPassText, tempPassButt)
 
 //passages
 
-passages[0] = 
+//passages[0] = 
 
 var xmen = wings;
 window.onload = document.getElementById("span").innerHTML = xmen;

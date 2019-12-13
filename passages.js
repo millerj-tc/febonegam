@@ -3,11 +3,11 @@ class Passage {
     constructor(passageStoryID, passageText, passageLinks) {
         
         this.storyID = passageStoryID;
-        this.text = passageText;
+        this.ptext = passageText;
       this.progressbuttons = passageLinks;
         }
-        get text() {
-            return this.text;   
+        get ptext() {
+            return this.ptext;   
         }
         get progressbuttons() {
             return this.progressbuttons;   

@@ -1,0 +1,6 @@
+get ptext() {
+            return this.ptext;   
+        }
+        get progressbuttons() {
+            return this.progressbuttons;   
+        }

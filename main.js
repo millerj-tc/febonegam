@@ -7,6 +7,7 @@ window.onload = document.getElementById("passageDisplay").innerHTML = currentPas
 
 var buttonRotation = 0;
 var buttonTimer =  [];
+var rateTimer = [];
 
 function buttonSwitch() {
   if (buttonRotation == 0) {

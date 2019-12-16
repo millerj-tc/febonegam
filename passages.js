@@ -64,9 +64,10 @@ class spiritCompat {
 //An understanding entry is a class whose properties describe how the player gains increasing understanding of the situation as they meet different effort thresholds
 
 class understandingEntry {
-    constructor(situationID, understandingQuote, understandingEffort){
+    constructor(situationID, understandingID, understandingQuote, understandingEffort){
         
         this._situationID = situationID;
+        this._understandingID = understandingID;
         this._understandingQuote = understandingQuote;
         this._understandingEffort = understandingEffort;
         
@@ -90,17 +91,21 @@ class tapRate{
 frostfire = new Situation();
 
 frostfire._situationID = 0;
-frostfire._spiritCompatability = [
-    
-    new spiritCompat(0,wynn,"I'll do my best!",.5),
-    
-    new spiritCompat(0,aragorn,"I'm the right warrior for the job.", 1)
-    
-    
-    
-    
-]
+frostfire._spiritCompatability = [];
+frostfire._understandingEntries = [];
+frostfire._tapFX = [];
 
+frostfire._spiritCompatability.push(new spiritCompat(0, "Wynn", "I'll do my best.", 1));
+frostfire._spiritCompatability.push(new spiritCompat(0, "Aragorn", "I'm the right warrior for the job.", 1.5));
+frostfire._spiritCompatability.push(new spiritCompat(0, "Gandalf", "This task must not fall to me.", .5));
+
+
+frostfire._understandingEntries.push(new understandingEntry(0,0,"Frostfire spreads across the land of Ysos, leaving destruction in its wake.", 10));
+frostfire._understandingEntries.push(new understandingEntry(0,1,"The progress of the frostfire has been halted at the mountain ranges by unusually early thaw.", 15));
+frostfire._understandingEntries.push(new understandingEntry(0,2,"The frostfire has died down, and the inhabitants of Ysos start to pick up the pieces of their lives", 20));                                     
+frostfire._tapFX.push(new tapRate(0,12,"You don't feel much.",.2));
+frostfire._tapFX.push(new tapRate(0,30,"Warmth fills your chest", 1));
+frostfire._tapFX.push(new tapRate(0,50,"In your mind, you can see a sparkle of frostfire guttering.", 2));
 
 
 passage0 = new Passage(0);

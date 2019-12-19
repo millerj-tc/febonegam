@@ -25,20 +25,21 @@ class Passage {
 
 //SPIRITS
 class Spirit {
-    constructor(){
-        
+    constructor(name){
+        this._name = name;
     }
 }
 
-wynn = new Spirit();
-aragorn = new Spirit();
-gandalf = new Spirit();
+wynn = new Spirit("Wynn");
+aragorn = new Spirit("Aragorn");
+gandalf = new Spirit("Gandalf");
 
 //SITUATIONS
 class Situation {
-    constructor(situationID, spiritCompatability, understandingEntries, actions, storyFX, tapFX) {
+    constructor(situationID, name, spiritCompatability, understandingEntries, actions, storyFX, tapFX) {
         
         this._situationID = situationID;
+        this._name = name;
         this._spiritCompatability = spiritCompatability;  //an array of spirit compatibility info for this situation
         this._understandingEntries = understandingEntries;
         this._actions = actions;
@@ -91,6 +92,7 @@ class tapRate{
 frostfire = new Situation();
 
 frostfire._situationID = 0;
+frostfire._name = "Frostfire";
 frostfire._spiritCompatability = [];
 frostfire._understandingEntries = [];
 frostfire._tapFX = [];
@@ -124,7 +126,3 @@ passage0.passageLinks = passage1;
 passage0.passageLinks = passage1;
 passage1.passageLinks = passage2;
 passage2.passageLinks = passage3;
-
-var wings = "rando";
-window.onload = document.getElementById("passages").innerHTML = "passages 0, empty third arg, technically";
-window.onload = document.getElementById("passageDisplay").innerHTML = "test";

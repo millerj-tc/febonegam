@@ -24,15 +24,18 @@ class Passage {
 }
 
 //SPIRITS
+var spiritArray = [];
 class Spirit {
-    constructor(name){
+    constructor(spiritID, name){
+        this._id = spiritID;
         this._name = name;
+        spiritArray.push(this);
     }
 }
 
-wynn = new Spirit("Wynn");
-aragorn = new Spirit("Aragorn");
-gandalf = new Spirit("Gandalf");
+wynn = new Spirit(0,"Wynn");
+aragorn = new Spirit(1,"Aragorn");
+gandalf = new Spirit(2,"Gandalf");
 
 //SITUATIONS
 class Situation {
@@ -49,7 +52,7 @@ class Situation {
     }
 }
 
-//Spirit Compat(abilty) is a class whose properties describes how well any given spirit contributes to the situation -- both in terms of player feedback and effort.
+//Spirit Compat(abilty) is a class whose properties describe how well any given spirit contributes to the situation -- both in terms of player feedback and effort.
 
 class spiritCompat {
     constructor(situationID, spiritCompatName, spiritCompatQuote, spiritCompatEffort){

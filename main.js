@@ -5,17 +5,51 @@ var availableSpirits = [wynn, aragorn, gandalf];
 var availableSituations = [frostfire];
 var spiritButtons = "";
 
+//for each spirit the player has unlocked...
+
 for (spi of availableSpirits) {
     
-    spiritButtons = spiritButtons + spi._name + " ";
+    // ...write the spirit's name, then a "recall" button to take them off whatever situation they are assigned to...
+    
+    spiritButtons = spiritButtons + spi._name + " " + "<button id='recall' class='button' onclick='spiritRecall("+spi._id+")'>Recall</button> ";
+    
+    //...and make a button to assign them to any of the currently available situations
     
     for(sit of availableSituations) {
-        console.log(sit);
-        spiritButtons = spiritButtons + "<button class='button' onclick='buttonSwitch()'>"+sit._name+"</button>";
+
+        //"spanSpiButtXY" is a unique span ID that can be used to deactivate and reactivate buttons once they are pressed
+        
+        spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'><button class='button' onclick='spiritAssign("+spi._id+","+sit._situationID+")'>"+sit._name+"</button></span>";
     }
     
-    spiritButtons = spiritButtons + "<br>"
+  
+    spiritButtons = spiritButtons + "<br><br>";
     
+}
+
+function spiritRecall(spiID){
+    
+    console.log(spiritArray);
+    for(spi of spiritArray) {
+    
+        if(spi._id == spiID) {
+            
+            
+            
+        }
+        
+    }
+    
+}
+
+function spiritAssign(spiritID,sitID) {
+  
+  console.log(spiritID);
+  console.log(sitID);
+  
+  // when a spirit is assigned to a situation, deactivate that situation's button by replacing the button with plaintext
+  document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name;
+  
 }
 
 window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButtons;
@@ -23,7 +57,6 @@ window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButto
 window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
 
 
-var buttonRotation = 0;
 var tapOn = 0;
 var buttonTimer = [];
 var rateTimer = [];

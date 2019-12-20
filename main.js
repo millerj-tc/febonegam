@@ -29,12 +29,13 @@ for (spi of availableSpirits) {
 
 function spiritRecall(spiID){
     
-    console.log(spiritArray);
+    
     for(spi of spiritArray) {
     
         if(spi._id == spiID) {
             
-            
+            document.getElementById("spanSpiButt"+spiID+spi._sitAssignment).innerHTML = "<button class='button' onclick='spiritAssign("+spi._id+","+spi._sitAssignment+")'>"+sit._name+"</button>";
+            spi._sitAssignment = -1;
             
         }
         
@@ -46,6 +47,15 @@ function spiritAssign(spiritID,sitID) {
   
   console.log(spiritID);
   console.log(sitID);
+  
+  for(spi of spiritArray) {
+    
+        if(spi._id == spiritID) {
+            
+            spi._sitAssignment = sitID;
+            
+        }
+  }
   
   // when a spirit is assigned to a situation, deactivate that situation's button by replacing the button with plaintext
   document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name;

@@ -26,9 +26,10 @@ class Passage {
 //SPIRITS
 var spiritArray = [];
 class Spirit {
-    constructor(spiritID, name){
+    constructor(spiritID, name, sitAssignment){
         this._id = spiritID;
         this._name = name;
+        this._sitAssignment = sitAssignment; //unassigned = -1
         spiritArray.push(this);
     }
 }

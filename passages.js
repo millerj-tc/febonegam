@@ -39,6 +39,7 @@ aragorn = new Spirit(1,"Aragorn");
 gandalf = new Spirit(2,"Gandalf");
 
 //SITUATIONS
+var situationArray = [];
 class Situation {
     constructor(situationID, name, spiritCompatability, understandingEntries, actions, storyFX, tapFX) {
         
@@ -49,6 +50,8 @@ class Situation {
         this._actions = actions;
         this._storyFX = storyFX;
         this._tapFX = tapFX;
+        this._assignedSpirits = []; //an array to track currently assigned spirits
+        situationArray.push(this);
         
     }
 }

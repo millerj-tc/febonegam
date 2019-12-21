@@ -34,8 +34,13 @@ function spiritRecall(spiID){
     
         if(spi._id == spiID) {
             
-            document.getElementById("spanSpiButt"+spiID+spi._sitAssignment).innerHTML = "<button class='button' onclick='spiritAssign("+spi._id+","+spi._sitAssignment+")'>"+sit._name+"</button>";
-            spi._sitAssignment = -1;
+            //reset the button
+            document.getElementById("spanSpiButt"+spiID+spi._sitAssignment._situationID).innerHTML = "<button class='button' onclick='spiritAssign("+spi._id+","+spi._sitAssignment+")'>"+sit._name+"</button>";
+            //unassign the spirit from the situation
+            spi._sitAssignment._assignedSpirits = spi._sitAssignment._assignedSpirits.filter(x => x != spi);
+            console.log(spi._sitAssignment._assignedSpirits);
+            //remove the situation assignment from the spirit object
+            spi._sitAssignment = [];
             
         }
         
@@ -52,13 +57,40 @@ function spiritAssign(spiritID,sitID) {
     
         if(spi._id == spiritID) {
             
-            spi._sitAssignment = sitID;
+            var currentSpirit = spi;
             
         }
   }
   
+  //get the spirit compatibility quote
+  for(sit of situationArray) {
+    
+    var currentSituation = [];
+    
+    if(sitID == sit._situationID) {
+      
+          currentSituation = sit;
+      
+      for(compat of currentSituation._spiritCompatability) {
+        
+        if(compat._spiritCompatName == currentSpirit._name) {
+          
+          var compatQuote = compat._spiritCompatQuote;
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
   // when a spirit is assigned to a situation, deactivate that situation's button by replacing the button with plaintext
-  document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name;
+  document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name+"<br>"+compatQuote;
+  //assign the situation to the spirit object
+  currentSpirit._sitAssignment = currentSituation;
+  //add the sprit to the situation's array of assigned spirits
+  currentSituation._assignedSpirits.push(currentSpirit);
   
 }
 

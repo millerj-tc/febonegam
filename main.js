@@ -54,7 +54,7 @@ function refreshSpiritButtons() {
     
     var compatQuote = "";
     
-    spiritButtons = "";
+    spiritButtons = "<hr><br>";
     
     for (spi of availableSpirits) {
 
@@ -98,26 +98,35 @@ function refreshSpiritButtons() {
 
 function refreshSituationButtons() {
     
-    var situationButtons = "";
+    console.log(availableSituations);
+    
+    if(typeof currentSituation == "undefined")  {console.log("-1"); return false;}
+    
+    var situationButtons = "<button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span><span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
+    
+    console.log("0");
     
     for(sit of availableSituations) {
-        
+        console.log("1");
         if(currentSituation != sit) {
             
-            situationButtons = situationButtons + "<button class='button' onclick='refreshUnderstanding("+sit._situationID+")'>"+sit._name+"</button> "
+            console.log(situationButtons);
+            
+            situationButtons = situationButtons + "<button class='button' onclick='refreshUnderstanding("+sit._situationID+")'>"+sit._name+"</button> ";
             
         }
         
         else {
-            
-            situationButtons = situationButtons + sit._name + " "
+            console.log("2");
+            situationButtons = situationButtons + sit._name + " ";
             
         }
         
         
     }
     
-    window.onload = document.getElementById("situationButtons").innerHTML = situationButtons;
+    document.getElementById("situationButtons").innerHTML = situationButtons;
+    document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
 }
 
 function refreshUnderstanding(sitID) {
@@ -258,7 +267,6 @@ function tapQuoteTimeout() {
       tapInterval = tapInterval + .1;      
   }
 
-window.onload = document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
 
 function rateBlink(timerName) {
    if(document.getElementById("rateIndicator").style.backgroundColor == "darkturquoise") {

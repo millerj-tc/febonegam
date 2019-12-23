@@ -1,22 +1,58 @@
-var currentPassage = passage0;
-var currentSituation = frostfire;
-var availableSpirits = [wynn, aragorn];
+var currentPassage;
+var currentSituation;
+var availableSpirits = [wynn];
 
-var availableSituations = [frostfire,rampagingDogs];
+var availableSituations = [];
 var spiritButtons = "";
 
+window.onload = loadPassage(0);
 
-function addGandalf() {
+function loadPassage(pID) {
     
-    availableSpirits.push(gandalf);
+    var passageButtonsString = "";
     
+    var pass = findPassageByID(pID);
+    
+    // If the passage has special code associated with it, this will execute that code (stored in the "execute" method of a special class)
+    
+    if(typeof pass._storyFX != "undefined") {
+    
+        pass._storyFX.execute();
+        
+    }
+    
+    document.getElementById("passageDisplay").innerHTML =  pass._ptext;
+    
+    // Draw the buttons that advance the story passages below the passage text
+    
+    for(butt of pass._progressButtons) {
+        
+        // each butt(on) actually holds the whole passage object that the button leads  to -- that's why it can refer to storyID, linkText, etc.
+        
+        passageButtonsString = passageButtonsString + "<button onclick='loadPassage(" + butt._storyID + ")'>" + butt._linkText + "</button>" +"<br>";
+        
+    }
+    
+    document.getElementById("passageButtons").innerHTML = passageButtonsString;
+    currentPassage = pass;
+    
+    refreshSituationButtons();
+    refreshSpiritButtons();
+    refreshUnderstanding();
 }
-
-
 
 function refreshSpiritButtons() {
     
+    
+    // Only draw the spirit buttons if there are situations to address
+    
+    if(availableSituations.length == 0 || typeof availableSituations == "undefined") {
+        return false;
+    }
+    
     //for each spirit the player has unlocked...
+    
+    var compatQuote = "";
     
     spiritButtons = "";
     
@@ -91,6 +127,11 @@ function refreshUnderstanding(sitID) {
     
     currentSituation = findSituationByID(sitID);
     
+    if(typeof currentSituation == "undefined") {
+        
+        return false;        
+    }
+    
     for(und of currentSituation._understandingEntries) {
         
         if(currentSituation._effort >= und._understandingEffort) {
@@ -108,12 +149,20 @@ function refreshUnderstanding(sitID) {
 
 window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons();
-window.onload = refreshUnderstanding(0);
+window.onload = refreshUnderstanding();
 
 function findSpiritByID(id) {
     for(spi of spiritArray) {
         if(id == spi._id) {
             return spi;
+        }
+    }
+}
+
+function findPassageByID(id) {
+    for(pass of passageArray) {
+        if(id == pass._storyID) {
+            return pass;
         }
     }
 }
@@ -273,6 +322,10 @@ function tapController(mode=0) {
     
     // If this was triggered by the regular interval, update each situation's effort based on the spirits assigned to it.
     
+    if(availableSituations.length == 0 || typeof availableSituations == "undefined") {    
+     return false;   
+    }
+    
     if(mode == 1) {
         
         for(sit of availableSituations) {
@@ -293,9 +346,14 @@ function tapController(mode=0) {
         
     }
     
+    if(typeof currentSituation == "undefined") {
+        
+        currentSituation = availableSituations[0];
+        
+    }
+    
     refreshUnderstanding(currentSituation._situationID);
     document.getElementById("rate").innerHTML = avgTapInterval;
-    console.log(currentSituation._effort);
     tapQuote = tapQ;
     
 }

@@ -1,11 +1,13 @@
 //PASSAGES
 var passageArray = [];
 class Passage {
-    constructor(passageStoryID, passageText, passageLinks) {
+    constructor(passageStoryID, linkText, passageText, passageLinks = [], storyFX) {
         
         this._storyID = passageStoryID;
+        this._linkText = linkText;
         this._ptext = passageText;
-        this._progressbuttons = passageLinks;
+        this._progressButtons = passageLinks;
+        this._storyFX = storyFX;
         passageArray.push(this);
         }
     get storyID() {
@@ -146,14 +148,71 @@ rampagingDogs._understandingEntries.push(new understandingEntry(1,0, "The dags a
 
 
 passage0 = new Passage(0);
-passage1 = new Passage(1, "...but he was also a very big lion.", []);
-passage2 = new Passage(2, "Practical.", []);
-passage3 = new Passage(3, "Perfect.", []);
+passage1 = new Passage(1);
+passage2 = new Passage(2);
+passage3 = new Passage(3);
+passage4 = new Passage(4);
+passage5 = new Passage(5);
+passage6 = new Passage(6);
+
 
 //what if you initiate object with no args, then define later like this? That way you don't need a separate passage mapping section and the classes with more arguments (like Situations) are more readable
 
-passage0.ptext = "Grigory was a penguin";
-passage0.passageLinks = passage1;
+passage0._ptext = "You are sitting in a cafe, one you frequent almost every day.<br><br><i>...what always brings you here?...</i>";
+passage0._progressButtons.push(passage1);
+
+passage1._linkText = "Keep to yourself";
+passage1._ptext = "There are two people chattering at the table next to you.";
+passage1._progressButtons.push(passage2);
+
+passage2._linkText = "Try not to listen";
+passage2._ptext = "\"Did you hear about the massive frostfire that broke out?\"<br>\"Yeah, I can't believe it. People are dying, homes destroyed. It's awful.\""
+passage2._progressButtons.push(passage3);
+
+passage3._linkText = "...";
+passage3._ptext = "<i>You know people talk about this shit, and yet you still show up.</i>";
+passage3._progressButtons.push(passage4);
+
+passage4._linkText = "Look around";
+passage4._ptext = "You can feel it. That pressure. It's tugging at you."
+passage4._progressButtons.push(passage5);
+passage4._progressButtons.push(passage6);
+
+passage5._linkText = "Resist...";
+
+class p5FX {
+    constructor(){}
+    
+    execute() {
+        
+        var pickQuote = Math.floor(Math.random()*3);
+        
+        if(pickQuote == 0) {passage5._ptext = "You can feel it in your teeth.";}
+        if(pickQuote == 1) {passage5._ptext = "It's not like it hurts anyone...";}
+        if(pickQuote == 2) {passage5._ptext = "You take a deep breath.";}
+        
+    }
+}
+
+passage5._storyFX = new p5FX;
+passage5._progressButtons.push(passage5);
+passage5._progressButtons.push(passage6);
+
+passage6._linkText = "Reach for your bag";
+passage6._ptext = "You reach in your bag."
+
+
+// Put any code that executes when you arrive at the passage inside of execute()
+//class passage1FX {
+//    constructor() {   
+//    }
+//    execute() {
+//        availableSituations.push(frostfire);   
+//    }
+//}
+//
+//passage1._storyFX = new passage1FX;
+
 
 
 

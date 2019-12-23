@@ -3,20 +3,32 @@
         <link rel="stylesheet" type="text/css" href="interface.css" />
     <body>
         <Br>
-        <span id="buttonImg"><button class="button" onclick="buttonSwitch()"><img src="arrow.png"></button></span><br>    
-        <Br>
-        <Br>
-        <span id="passageDisplay"></span>
+        <div id="passageDisplayDiv">
+            <button onclick="addGandalf()">Add Gandy</button>
+            <span id="passageDisplay"></span>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div id="spiritDisplayDiv">
+            <button onclick='refreshSpiritButtons()'>Refresh</button><br><br>
+            <span id="spiritDisplay"></span>     
+        </div>
+        <hr>
+        <br>
+        <button onclick="buttonSwitch()">Channel</button> <button onclick="rateRefresh()">Refresh</button> <span id="rateIndicator" class="rateIndicator"></span><span id="rate"></span>
         <br>
         <br>
-        <span id="situationDisplay"></span>
+        <span id="rateQuote"></span>
         <br>
+        <hr>
         <br>
-        <span id="spiritDisplay"></span>
-        <br>
-        <br>
-        <span id="rateIndicator" class="rateIndicator"></span><span id="rate"></span>
-        <br>
+        <div id="situationDisplay">
+            <span id="situationButtons"></span>
+            <br>
+            <br>
+            <span id="understandingDisplay"></span>
+        </div>
         <br>
         <script src="passages.js"></script>
         <script src="main.js"></script>

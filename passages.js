@@ -1,10 +1,12 @@
 //PASSAGES
+var passageArray = [];
 class Passage {
     constructor(passageStoryID, passageText, passageLinks) {
         
         this._storyID = passageStoryID;
         this._ptext = passageText;
         this._progressbuttons = passageLinks;
+        passageArray.push(this);
         }
     get storyID() {
         return this._storyID;
@@ -29,7 +31,7 @@ class Spirit {
     constructor(spiritID, name, sitAssignment){
         this._id = spiritID;
         this._name = name;
-        this._sitAssignment = sitAssignment; //unassigned = -1
+        this._sitAssignment = sitAssignment; //assignment is situation object
         spiritArray.push(this);
     }
 }
@@ -41,7 +43,7 @@ gandalf = new Spirit(2,"Gandalf");
 //SITUATIONS
 var situationArray = [];
 class Situation {
-    constructor(situationID, name, spiritCompatability, understandingEntries, actions, storyFX, tapFX) {
+    constructor(situationID, name, spiritCompatability = [], understandingEntries = [], actions, storyFX, tapFX = [], effort = 0) {
         
         this._situationID = situationID;
         this._name = name;
@@ -51,7 +53,25 @@ class Situation {
         this._storyFX = storyFX;
         this._tapFX = tapFX;
         this._assignedSpirits = []; //an array to track currently assigned spirits
+        this._effort = effort;
         situationArray.push(this);
+        
+    }
+    
+    findCompatibility(spiritID) {
+        
+        var methodSpi = findSpiritByID(spiritID);
+        var compat;
+
+        for(compat of this._spiritCompatability) {
+        
+            if(compat._spiritCompatName == methodSpi._name) {
+          
+                return compat;
+          
+        }
+        
+      }
         
     }
 }
@@ -64,7 +84,7 @@ class spiritCompat {
         this._situationID = situationID;
         this._spiritCompatName = spiritCompatName;
         this._spiritCompatQuote = spiritCompatQuote;
-        this.__spiritCompatEffort = spiritCompatEffort;
+        this._spiritCompatEffort = spiritCompatEffort;
         
     }
 }
@@ -86,10 +106,11 @@ class understandingEntry {
 //Tap rate is a class that describes how different tap rates (by the player) contribute to the situation.
 
 class tapRate{
-    constructor(situationID, rate, tapQuote, effort){
+    constructor(situationID, rateMin,rateMax, tapQuote, effort){
         
         this._situationID = situationID;
-        this._rate = rate;
+        this._rateMin = rateMin;
+        this._rateMax = rateMax;
         this._tapQuote = tapQuote;
         this._effort = effort;
         
@@ -97,24 +118,31 @@ class tapRate{
 }
 
 frostfire = new Situation();
+rampagingDogs = new Situation();
 
 frostfire._situationID = 0;
 frostfire._name = "Frostfire";
-frostfire._spiritCompatability = [];
-frostfire._understandingEntries = [];
-frostfire._tapFX = [];
 
 frostfire._spiritCompatability.push(new spiritCompat(0, "Wynn", "I'll do my best.", 1));
 frostfire._spiritCompatability.push(new spiritCompat(0, "Aragorn", "I'm the right warrior for the job.", 1.5));
 frostfire._spiritCompatability.push(new spiritCompat(0, "Gandalf", "This task must not fall to me.", .5));
 
 
-frostfire._understandingEntries.push(new understandingEntry(0,0,"Frostfire spreads across the land of Ysos, leaving destruction in its wake.", 10));
-frostfire._understandingEntries.push(new understandingEntry(0,1,"The progress of the frostfire has been halted at the mountain ranges by unusually early thaw.", 15));
-frostfire._understandingEntries.push(new understandingEntry(0,2,"The frostfire has died down, and the inhabitants of Ysos start to pick up the pieces of their lives", 20));                                     
-frostfire._tapFX.push(new tapRate(0,12,"You don't feel much.",.2));
-frostfire._tapFX.push(new tapRate(0,30,"Warmth fills your chest", 1));
-frostfire._tapFX.push(new tapRate(0,50,"In your mind, you can see a sparkle of frostfire guttering.", 2));
+frostfire._understandingEntries.push(new understandingEntry(0,0,"Frostfire spreads across the land of Ysos, leaving destruction in its wake.", 0));
+frostfire._understandingEntries.push(new understandingEntry(0,1,"The progress of the frostfire has been halted at the mountain ranges by unusually early thaw.", 20));
+frostfire._understandingEntries.push(new understandingEntry(0,2,"The frostfire has died down, and the inhabitants of Ysos start to pick up the pieces of their lives", 30));                                     
+frostfire._tapFX.push(new tapRate(0,5,2.1,"You don't feel much.",.2));
+frostfire._tapFX.push(new tapRate(0,2,1.6,"Warmth fills your chest", 1));
+frostfire._tapFX.push(new tapRate(0,1.5,.01,"In your mind, you can see a sparkle of frostfire guttering.", 2));
+
+rampagingDogs._situationID = 1;
+rampagingDogs._name = "Rampaging Dogs";
+
+rampagingDogs._spiritCompatability.push(new spiritCompat(1,"Wynn", "I will calm the puppers.", 2));
+rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Aragorn", "Dogs?", .5));
+rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Gandalf", "A calming spell should work...", 1));
+
+rampagingDogs._understandingEntries.push(new understandingEntry(1,0, "The dags are everywhere!", 0));
 
 
 passage0 = new Passage(0);

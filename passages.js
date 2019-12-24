@@ -147,13 +147,33 @@ rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Gandalf", "A calmin
 rampagingDogs._understandingEntries.push(new understandingEntry(1,0, "The dags are everywhere!", 0));
 
 
-passage0 = new Passage(0);
-passage1 = new Passage(1);
-passage2 = new Passage(2);
-passage3 = new Passage(3);
-passage4 = new Passage(4);
-passage5 = new Passage(5);
-passage6 = new Passage(6);
+function passageInit() {
+
+    passage0 = new Passage(0);
+    passage1 = new Passage(1);
+    passage2 = new Passage(2);
+    passage3 = new Passage(3);
+    passage4 = new Passage(4);
+    passage5 = new Passage(5);
+    passage6 = new Passage(6);
+    passage7 = new Passage(7);
+    passage8 = new Passage(8);
+    passage9 = new Passage(9);
+    passage10 = new Passage(10);
+    passage11 = new Passage(11);
+    passage12 = new Passage(12);
+    passage13 = new Passage(13);
+    passage14 = new Passage(14);
+    passage15 = new Passage(15);
+    passage16 = new Passage(16);
+    passage17 = new Passage(17);
+    passage18 = new Passage(18);
+    passage19 = new Passage(19);
+    passage20 = new Passage(20);
+    
+}
+
+passageInit();
 
 
 //what if you initiate object with no args, then define later like this? That way you don't need a separate passage mapping section and the classes with more arguments (like Situations) are more readable
@@ -185,6 +205,8 @@ class p5FX {
     
     execute() {
         
+        availableSituations.push(frostfire);
+        
         var pickQuote = Math.floor(Math.random()*3);
         
         if(pickQuote == 0) {passage5._ptext = "You can feel it in your teeth.";}
@@ -199,10 +221,10 @@ passage5._progressButtons.push(passage5);
 passage5._progressButtons.push(passage6);
 
 passage6._linkText = "Reach for your bag";
-passage6._ptext = "You reach in your bag."
+passage6._ptext = "You reach in your bag.";
 
 
-// Put any code that executes when you arrive at the passage inside of execute()
+ //Put any code that executes when you arrive at the passage inside of execute()
 //class passage1FX {
 //    constructor() {   
 //    }

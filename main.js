@@ -2,7 +2,7 @@ var currentPassage;
 var currentSituation;
 var availableSpirits = [wynn];
 
-var availableSituations = [];
+var availableSituations = [frostfire];
 var spiritButtons = "";
 
 window.onload = loadPassage(0);
@@ -93,31 +93,30 @@ function refreshSpiritButtons() {
     
     //write the combined string to the page
     
+    spiritButtons = spiritButtons + "<br><hr><br>";
+    
     window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButtons;
 }
 
 function refreshSituationButtons() {
     
-    console.log(availableSituations);
     
-    if(typeof currentSituation == "undefined")  {console.log("-1"); return false;}
+    if(typeof currentSituation == "undefined")  {return false;}
     
     var situationButtons = "<button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span><span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
     
-    console.log("0");
+    
+    
     
     for(sit of availableSituations) {
-        console.log("1");
         if(currentSituation != sit) {
             
-            console.log(situationButtons);
             
             situationButtons = situationButtons + "<button class='button' onclick='refreshUnderstanding("+sit._situationID+")'>"+sit._name+"</button> ";
             
         }
         
         else {
-            console.log("2");
             situationButtons = situationButtons + sit._name + " ";
             
         }
@@ -125,16 +124,25 @@ function refreshSituationButtons() {
         
     }
     
+    
     document.getElementById("situationButtons").innerHTML = situationButtons;
-    document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
 }
 
-function refreshUnderstanding(sitID) {
+function refreshUnderstanding(sitID,ldPassage = 0) {
+    
+
+    //THIS IS FUCKING WITH THE CHANNEL BUTTON BECAUSE OF THE DARK TURQUOISE REFRESH -- IS WHAT I THINK. ALSO I NEED TO REBUILD COMPAT QUOTES TO BE TIERED BUT ALSO SPECIAL?
     
     
     var understandingDisplay = "";
     
     currentSituation = findSituationByID(sitID);
+    
+//    for(spi of currentSituation._assignedSpirits) {
+//        
+//        understandingDisplay = understandingDisplay + spi._name + ": "
+//        
+//    }
     
     if(typeof currentSituation == "undefined") {
         
@@ -153,7 +161,8 @@ function refreshUnderstanding(sitID) {
     
     refreshSituationButtons();
     document.getElementById("understandingDisplay").innerHTML = understandingDisplay;
-    
+    document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
+
 }
 
 window.onload = refreshSpiritButtons();

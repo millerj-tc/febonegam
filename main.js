@@ -2,7 +2,7 @@ var currentPassage;
 var currentSituation;
 var availableSpirits = [wynn];
 
-var availableSituations = [frostfire];
+var availableSituations = [];
 var spiritButtons = "";
 
 window.onload = loadPassage(0);
@@ -36,10 +36,13 @@ function loadPassage(pID) {
     document.getElementById("passageButtons").innerHTML = passageButtonsString;
     currentPassage = pass;
     
-    refreshSituationButtons();
+    defaultCurrentSit();
+    refreshSituationButtons(0);
+    refreshRateIndicator();
     refreshSpiritButtons();
     refreshUnderstanding();
 }
+
 
 function refreshSpiritButtons() {
     
@@ -52,7 +55,6 @@ function refreshSpiritButtons() {
     
     //for each spirit the player has unlocked...
     
-    var compatQuote = "";
     
     spiritButtons = "<hr><br>";
     
@@ -64,6 +66,7 @@ function refreshSpiritButtons() {
         spiritButtons = spiritButtons + spi._name + " " + "<button id='recall' class='button' onclick='spiritRecall("+spi._id+")'>Recall</button> ";
 
         //...and make a button to assign them to any of the currently available situations (unless they are already assigned to that situation)
+        
 
         for(sit of availableSituations) {
 
@@ -71,48 +74,51 @@ function refreshSpiritButtons() {
             
             if(spi._sitAssignment == sit) {
                 
-                spiritButtons = spiritButtons + "<span id='spanSpiButt'"+spi._id+sit._situationID+">"+sit._name+"</span>"
+                spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'>"+sit._name+"</span>"
                     
-                compatQuote = sit.findCompatibility(spi._id)._spiritCompatQuote;    
                 
             }
             
             else {
                 
                 spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'><button class='button' onclick='spiritAssign("+spi._id+","+sit._situationID+")'>"+sit._name+"</button> </span>";
-                compatQuote = "";
+                //compatQuote = "";
                 
             }
+            
         }
 
 
-        spiritButtons = spiritButtons + "<br>" + "<span id='compatQuote"+spi._id + "'>"+compatQuote+"</span>";
+        //spiritButtons = spiritButtons + "<br>" 
+            //+ "<span id='compatQuote"+spi._id + "'>"+compatQuote+"</span>";
         spiritButtons = spiritButtons + "<br><br>";
 
     }
     
     //write the combined string to the page
     
-    spiritButtons = spiritButtons + "<br><hr><br>";
+    spiritButtons = spiritButtons + "<hr><br>";
     
     window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButtons;
 }
 
-function refreshSituationButtons() {
+function refreshSituationButtons(x) {
+    
+    //MAKE A SEPARATE FUNCTION FOR BUTTON CLICKING SEPARATE FROM WHAT NEEDS TO BE UPDATED BY THE TICK
     
     
-    if(typeof currentSituation == "undefined")  {return false;}
+    if(typeof currentSituation == "undefined")  {return; }
     
     var situationButtons = "<button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span><span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
     
     
-    
+
     
     for(sit of availableSituations) {
         if(currentSituation != sit) {
             
             
-            situationButtons = situationButtons + "<button class='button' onclick='refreshUnderstanding("+sit._situationID+")'>"+sit._name+"</button> ";
+            situationButtons = situationButtons + "<button class='button' onclick='sitClick("+sit._situationID+")'>"+sit._name+"</button> ";
             
         }
         
@@ -126,28 +132,53 @@ function refreshSituationButtons() {
     
     
     document.getElementById("situationButtons").innerHTML = situationButtons;
+    
+//    if(x == 0) {
+//
+//        console.log('set');
+//        document.getElementById("rateIndicator2").style.backgroundColor = "darkturquoise";
+//        
+//    }
+//    
+//    console.log(document.getElementById("rateIndicator2").style.backgroundColor);
 }
 
-function refreshUnderstanding(sitID,ldPassage = 0) {
+function sitClick(sitID) {
     
+    currentSituation = findSituationByID(sitID);
+    refreshRateIndicator();
+    refreshSituationButtons();
+    refreshSpiritQuotes();
+    refreshSpiritIcon();
+    refreshUnderstanding();
+    
+}
 
-    //THIS IS FUCKING WITH THE CHANNEL BUTTON BECAUSE OF THE DARK TURQUOISE REFRESH -- IS WHAT I THINK. ALSO I NEED TO REBUILD COMPAT QUOTES TO BE TIERED BUT ALSO SPECIAL?
+function refreshRateIndicator() {
     
+    if(typeof currentSituation == "undefined")  {return false;}
+    
+    document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
+    
+}
+
+function refreshUnderstanding(sitID = -1,ldPassage = 0) {
     
     var understandingDisplay = "";
     
-    currentSituation = findSituationByID(sitID);
+    if(sitID != -1) {
     
-//    for(spi of currentSituation._assignedSpirits) {
-//        
-//        understandingDisplay = understandingDisplay + spi._name + ": "
-//        
-//    }
+        currentSituation = findSituationByID(sitID);
+        
+    }
     
     if(typeof currentSituation == "undefined") {
         
-        return false;        
+        return false;
+    
     }
+    
+    //clearInterval(spiQuoteTimer);
     
     for(und of currentSituation._understandingEntries) {
         
@@ -158,16 +189,77 @@ function refreshUnderstanding(sitID,ldPassage = 0) {
         }
         
     }
-    
-    refreshSituationButtons();
+        
+    //refreshSituationButtons();
     document.getElementById("understandingDisplay").innerHTML = understandingDisplay;
-    document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
+    //refreshSpiritQuotes();
+    //refreshSpiritIcon();
+    //console.log(document.getElementById("understandingDisplay"));
+    //console.log(document.getElementById("spirit" + spi._id + "quote").innerHTML);
+    
 
 }
 
+function refreshSpiritQuotes() {
+    
+    var spiritQuote = "";
+    
+    if(typeof currentSituation == "undefined" || currentSituation._assignedSpirits.length == 0) {
+        clearInterval(spiQuoteTimer);
+        document.getElementById("spiritQuoteDisplay").innerHTML = "";
+        return false;
+    }
+    
+    spiritQuote = "<br><br>";
+    
+    for(spi of currentSituation._assignedSpirits) {
+        
+        spiritQuote = spiritQuote + "<span id='spiritIcon" + spi._id + "' style='font-family:Lucida Console'></span> " + spi._name +  ": <span id='spirit" + spi._id + "quote'>test</span><br>";
+        
+        
+    }
+    
+//    if(currentSituation._assignedSpirits.length > 0) {
+//        
+//        spiritQuote = spiritQuote + "<br>";
+//        
+//    }
+    
+    document.getElementById("spiritQuoteDisplay").innerHTML = spiritQuote;
+    
+    for(spi of currentSituation._assignedSpirits) {
+        
+        //find the difficulty of the sitaution
+        
+        for(compat of currentSituation._spiritCompatability) {
+            
+            if(compat._spiritCompatName == spi._name) {
+                
+                var diffQuotes;
+                
+                if(compat._spiritCompatLevel == "easy") {diffQuotes = spi._easyQuotes;}
+                if(compat._spiritCompatLevel == "medium") {diffQuotes = spi._mediumQuotes;}
+                if(compat._spiritCompatLevel == "hard") {diffQuotes = spi._hardQuotes;}
+                
+                if(typeof diffQuotes == "undefined") {
+                    return false;
+                }
+                
+            }
+            
+        }
+        
+        var pickQuote = diffQuotes[Math.floor(Math.random()*diffQuotes.length)];
+        document.getElementById("spirit" + spi._id + "quote").innerHTML = pickQuote;
+        refreshSpiritIcon();
+    }
+    
+}
+
 window.onload = refreshSpiritButtons();
-window.onload = refreshSituationButtons();
+window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();
+window.onload = tapController();
 
 function findSpiritByID(id) {
     for(spi of spiritArray) {
@@ -198,15 +290,21 @@ function spiritRecall(spiID){
     
     var funcSpirit = findSpiritByID(spiID);       
     //reset the button
+    
     document.getElementById("spanSpiButt"+spiID+funcSpirit._sitAssignment._situationID).innerHTML = "<button class='button' onclick='spiritAssign("+funcSpirit._id+","+funcSpirit._sitAssignment._situationID+")'>"+sit._name+"</button>";
-    document.getElementById("compatQuote"+spiID).innerHTML = "";
+    //document.getElementById("compatQuote"+spiID).innerHTML = "";
     //unassign the spirit from the situation
     funcSpirit._sitAssignment._assignedSpirits = funcSpirit._sitAssignment._assignedSpirits.filter(x => x != funcSpirit);
     //remove the situation assignment from the spirit object
-    funcSpirit._sitAssignment = [];
+    funcSpirit._sitAssignment = "unassigned";
+    refreshSpiritButtons();
+    refreshUnderstanding();
+    refreshSpiritQuotes(); 
             
     
 }
+
+var spiQuoteTimer;
 
 function spiritAssign(spiritID,sitID) {
   
@@ -216,15 +314,31 @@ function spiritAssign(spiritID,sitID) {
   //get the spirit compatibility quote
   var funcSituation = findSituationByID(sitID);
     
+    if(currentSpirit._sitAssignment != "unassigned") {
+        
+        console.log("reassigning...");
+        console.log(currentSpirit._sitAssignment);
+        spiritRecall(currentSpirit._id);
+    
+    }
+    
   
   // when a spirit is assigned to a situation, deactivate that situation's button by replacing the button with plaintext
   document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name + " ";
-  document.getElementById("compatQuote"+spiritID).innerHTML = funcSituation.findCompatibility(spiritID)._spiritCompatQuote;
+  //document.getElementById("compatQuote"+spiritID).innerHTML = funcSituation.findCompatibility(spiritID)._spiritCompatQuote;
   //assign the situation to the spirit object
   currentSpirit._sitAssignment = funcSituation;
   //add the sprit to the situation's array of assigned spirits
   funcSituation._assignedSpirits.push(currentSpirit);
   
+    if(funcSituation._assignedSpirits.length == 1) {
+  
+      spiQuoteTimer = window.setInterval(refreshSpiritQuotes,5000);
+      
+  }
+    
+    refreshSpiritButtons();
+    refreshSpiritQuotes();  
 }
 
 window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
@@ -236,12 +350,10 @@ var rateTimer = [];
 var tapInterval = 0;
 var tapArray = [];
 var avgTapInterval = 0;
-var blinkTimer = [];
-var blinkReset = [];
 var timeout;
 
 function buttonSwitch() {
-    
+
     rateBlink("buttonClick");
   
   if(tapOn == 1) {
@@ -276,17 +388,22 @@ function tapQuoteTimeout() {
       tapInterval = tapInterval + .1;      
   }
 
-
 function rateBlink(timerName) {
-   if(document.getElementById("rateIndicator").style.backgroundColor == "darkturquoise") {
+
+    var blinkReset;
+    
+    
+   if(timerName == "buttonClick") {
+       console.log("trig");
         document.getElementById("rateIndicator").style.backgroundColor = "red";
         clearInterval(blinkReset);
-        blinkReset = window.setInterval(function(){rateBlink("blinkReset")}, 225);
+        blinkReset = window.setInterval(function(){rateBlink()}, 225);
     }
     else {
         clearInterval(blinkReset);
         document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
     }
+    
 
 }
 
@@ -305,6 +422,42 @@ window.setInterval(function(){tapController(1)},1000);
 
 var tapQuote = "";
 
+function defaultCurrentSit() {
+    
+    if(typeof currentSituation == "undefined" && availableSituations.length > 0) {
+        
+        currentSituation = availableSituations[0];
+        
+    }
+    
+}
+
+function refreshSpiritIcon() {
+    
+    if(typeof currentSituation == "undefined" || currentSituation._assignedSpirits.length == 0) {return false;}
+    
+    for(spi of currentSituation._assignedSpirits) {
+        
+        var icon;
+        
+        icon = Math.floor(Math.random()*8)
+        
+        if(icon == 0){icon = "<b>~</b>"}
+        if(icon == 1){icon = "<b>+</b>"}
+        if(icon == 2){icon = "<b>&</b>"}
+        if(icon == 3){icon = "<b>*</b>"}
+        if(icon == 4){icon = "<b>{</b>"}
+        if(icon == 5){icon = "<b>?</b>"}
+        if(icon == 6){icon = "<b>#</b>"}
+        if(icon == 7){icon = "<b><</b>"}
+        if(icon == 8){icon = "<b>|</b>"}
+           
+        document.getElementById("spiritIcon"+spi._id).innerHTML = icon;
+           
+       } 
+    
+}
+
 function tapController(mode=0) {
     
     var tapQ = "";
@@ -312,6 +465,7 @@ function tapController(mode=0) {
     //If this was triggered by channeling, add effort to situation based on rate
     
     if(mode == 2) {
+        
     
         for(tapR of currentSituation._tapFX) {
 
@@ -362,15 +516,22 @@ function tapController(mode=0) {
         }
         
     }
+
+    defaultCurrentSit();
+    refreshUnderstanding(currentSituation._situationID);
     
-    if(typeof currentSituation == "undefined") {
+    if(currentSituation._assignedSpirits.length == 0) {
         
-        currentSituation = availableSituations[0];
+        clearInterval(spiQuoteTimer);
         
     }
     
-    refreshUnderstanding(currentSituation._situationID);
     document.getElementById("rate").innerHTML = avgTapInterval;
     tapQuote = tapQ;
+    
+    //Do the spirit quote effect
+    
+    refreshSpiritIcon();
+        
     
 }

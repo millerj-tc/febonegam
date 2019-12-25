@@ -30,16 +30,21 @@ class Passage {
 //SPIRITS
 var spiritArray = [];
 class Spirit {
-    constructor(spiritID, name, sitAssignment){
+    constructor(spiritID, name, easyQuotes, mediumQuotes, hardQuotes, sitAssignment = "unassigned"){
         this._id = spiritID;
         this._name = name;
+        this._easyQuotes = easyQuotes;
+        this._mediumQuotes = mediumQuotes;
+        this._hardQuotes = hardQuotes;
         this._sitAssignment = sitAssignment; //assignment is situation object
+        
+        
         spiritArray.push(this);
     }
 }
 
-wynn = new Spirit(0,"Wynn");
-aragorn = new Spirit(1,"Aragorn");
+wynn = new Spirit(0,"Wynn", ["No problem!"], ["I can handle it!...I think.", "I've got a strong idea! We'll see how it works out."], ["This is wearing me down..."]);
+aragorn = new Spirit(1,"Aragorn", ["I'm the right warrior for the job!", "Pray, a harder task next time", "Done in a jiff"]);
 gandalf = new Spirit(2,"Gandalf");
 
 //SITUATIONS
@@ -81,11 +86,12 @@ class Situation {
 //Spirit Compat(abilty) is a class whose properties describe how well any given spirit contributes to the situation -- both in terms of player feedback and effort.
 
 class spiritCompat {
-    constructor(situationID, spiritCompatName, spiritCompatQuote, spiritCompatEffort){
+    constructor(situationID, spiritCompatName, spiritCompatLevel, spiritCompatEffort, spiritCompatQuote){
         
         this._situationID = situationID;
         this._spiritCompatName = spiritCompatName;
         this._spiritCompatQuote = spiritCompatQuote;
+        this._spiritCompatLevel = spiritCompatLevel;
         this._spiritCompatEffort = spiritCompatEffort;
         
     }
@@ -125,8 +131,8 @@ rampagingDogs = new Situation();
 frostfire._situationID = 0;
 frostfire._name = "Frostfire";
 
-frostfire._spiritCompatability.push(new spiritCompat(0, "Wynn", "I'll do my best.", 1));
-frostfire._spiritCompatability.push(new spiritCompat(0, "Aragorn", "I'm the right warrior for the job.", 1.5));
+frostfire._spiritCompatability.push(new spiritCompat(0, "Wynn", "medium", 1));
+frostfire._spiritCompatability.push(new spiritCompat(0, "Aragorn", "easy", 1.5));
 frostfire._spiritCompatability.push(new spiritCompat(0, "Gandalf", "This task must not fall to me.", .5));
 
 
@@ -140,8 +146,8 @@ frostfire._tapFX.push(new tapRate(0,1.5,.01,"In your mind, you can see a sparkle
 rampagingDogs._situationID = 1;
 rampagingDogs._name = "Rampaging Dogs";
 
-rampagingDogs._spiritCompatability.push(new spiritCompat(1,"Wynn", "I will calm the puppers.", 2));
-rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Aragorn", "Dogs?", .5));
+rampagingDogs._spiritCompatability.push(new spiritCompat(1,"Wynn", "easy", 2));
+rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Aragorn", "medium", .5));
 rampagingDogs._spiritCompatability.push(new spiritCompat(1, "Gandalf", "A calming spell should work...", 1));
 
 rampagingDogs._understandingEntries.push(new understandingEntry(1,0, "The dags are everywhere!", 0));
@@ -206,6 +212,8 @@ class p5FX {
     execute() {
         
         availableSituations.push(frostfire);
+        availableSituations.push(rampagingDogs);
+        availableSpirits.push(aragorn);
         
         var pickQuote = Math.floor(Math.random()*3);
         
@@ -216,7 +224,7 @@ class p5FX {
     }
 }
 
-passage5._storyFX = new p5FX;
+passage0._storyFX = new p5FX;
 passage5._progressButtons.push(passage5);
 passage5._progressButtons.push(passage6);
 

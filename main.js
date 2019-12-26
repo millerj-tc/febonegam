@@ -5,7 +5,7 @@ var availableSpirits = [];
 var availableSituations = [];
 var spiritButtons = "";
 
-window.onload = loadPassage(11);
+window.onload = loadPassage(0);
 
 function loadPassage(pID) {
     

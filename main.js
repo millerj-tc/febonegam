@@ -113,10 +113,12 @@ function refreshSituationButtons(x) {
         return; 
     }
     
+    //display the channel button and rate indicators
+    
     var situationButtons = "<hr><br><button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span> <span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
     
     
-
+// for each situation that is available, make a button so that you can display the sprits/understanding info associated with that situation
     
     for(sit of availableSituations) {
         if(currentSituation != sit) {
@@ -193,6 +195,8 @@ function refreshUnderstanding(sitID = -1,ldPassage = 0) {
             
             undies++;
             
+            // if this is the first time this understanding entry is being displayed, execute any special code associated with it (stored in the execute() method of a special class unique to that entry)
+            
             if(und._firstView == true && typeof und._storyFX != "undefined") {
             
                 und._storyFX.execute();
@@ -205,6 +209,8 @@ function refreshUnderstanding(sitID = -1,ldPassage = 0) {
         }
         
     }
+    
+    // this just switches a bool if all the understanding entries are currently being displayed for "tooltip" reasons
     
     if(currentSituation._understandingEntries.length == undies) {
         currentSituation._understood = true;
@@ -244,7 +250,7 @@ function refreshSpiritQuotes() {
     
     for(spi of currentSituation._assignedSpirits) {
         
-        //find the difficulty of the sitaution
+        //find the difficulty of the sitaution and display the spirit quotes associated with that difficulty level
         
         for(compat of currentSituation._spiritCompatability) {
             
@@ -307,7 +313,7 @@ function spiritRecall(spiID){
     //reset the button
     
     document.getElementById("spanSpiButt"+spiID+funcSpirit._sitAssignment._situationID).innerHTML = "<button class='button' onclick='spiritAssign("+funcSpirit._id+","+funcSpirit._sitAssignment._situationID+")'>"+sit._name+"</button>";
-    //document.getElementById("compatQuote"+spiID).innerHTML = "";
+    
     //unassign the spirit from the situation
     funcSpirit._sitAssignment._assignedSpirits = funcSpirit._sitAssignment._assignedSpirits.filter(x => x != funcSpirit);
     //remove the situation assignment from the spirit object
@@ -326,21 +332,19 @@ function spiritAssign(spiritID,sitID) {
     
   var currentSpirit = findSpiritByID(spiritID);
   
-  //get the spirit compatibility quote
   var funcSituation = findSituationByID(sitID);
     
+    // if the spirit is already assigned to another situation, recal that spirit first
     if(currentSpirit._sitAssignment != "unassigned") {
         
-        console.log("reassigning...");
-        console.log(currentSpirit._sitAssignment);
         spiritRecall(currentSpirit._id);
     
     }
     
   
-  // when a spirit is assigned to a situation, deactivate that situation's button by replacing the button with plaintext
+  // when a spirit is assigned to a situation, deactivate that situation's button in the spirit button display by replacing the button with plaintext
   document.getElementById("spanSpiButt"+spiritID+sitID).innerHTML = sit._name + " ";
-  //document.getElementById("compatQuote"+spiritID).innerHTML = funcSituation.findCompatibility(spiritID)._spiritCompatQuote;
+  
   //assign the situation to the spirit object
   currentSpirit._sitAssignment = funcSituation;
   //add the sprit to the situation's array of assigned spirits
@@ -369,21 +373,26 @@ var avgTapInterval = 0;
 var timeout;
 var secondsIdle = 0;
 
+//need to rename this so that it reflects that it specfically deals with the "channel" button
+
 function buttonSwitch() {
 
+    //make the circular indicator blink red when clicked
     rateBlink("buttonClick");
   
   if(tapOn == 1) {
+      
+      //calculate the average tap interval for the channel button once the player has tapped it at least twice
       tapArray.push(tapInterval);
       tapInterval = 0;
       for (x of tapArray) {
           avgTapInterval = avgTapInterval + x;   
     		}
       avgTapInterval = avgTapInterval/tapArray.length;
-      //clearInterval(blinkTimer);
-      //blinkTimer = window.setInterval(function(){rateBlink("blinkInterval")},avgTapInterval*1000);
-      //avgTapInterval = 0;
+      
   }
+    
+    //if the player hasn't tapped yet (or has just refreshed), initiate the average tap interval calculation
     if (tapOn == 0) {
       tapOn = 1;
       buttonTimer = window.setInterval(setRate, 100);
@@ -449,11 +458,15 @@ var tapQuote = "";
 
 function defaultCurrentSit() {
     
+    // if a situation is available but currentSituation has become undefined, set the currentSituation to the first available one
+    
     if(typeof currentSituation == "undefined" && availableSituations.length > 0) {
         
         currentSituation = availableSituations[0];
         
     }
+    
+    //this seems unnecessary given the conditions above? why is this here lol
     
     else if(availableSituations.length == 0) {
         currentSituation = undefined;
@@ -493,7 +506,7 @@ function tapController(mode=0) {
     
     var tapQ = "";
     
-    //If this was triggered by channeling, add effort to situation based on rate
+    //If this was triggered by channeling, add effort to situation based on rate. Maybe should move this to channeling function?
     
     if(mode == 2 && typeof currentSituation != "undefined") {
         
@@ -533,6 +546,8 @@ function tapController(mode=0) {
     }
     
     if(mode == 1) {
+        
+        // for each situation with spirits assigned to it, update that situations effort with the effect of the spirit
         
         for(sit of availableSituations) {
             
@@ -583,6 +598,8 @@ function tapController(mode=0) {
         document.getElementById("rate").innerHTML = document.getElementById("rate").innerHTML + " <i>Seems like this rate isn't working out, maybe try refreshing the rate and trying a different channeling frequency?</i>"; 
     
     }
+    
+    // do we need tapQuote/tapQ anymore?
     
     tapQuote = tapQ;
     

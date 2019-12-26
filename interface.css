@@ -1,8 +1,8 @@
 .button {
   background-color: #4CAF50;
   color: white;
-  width: 90px;
-  height: 60px;
+  min-width: 90px;
+  height: 30px;
 }
 
 .rateIndicator {

@@ -359,6 +359,7 @@ function spiritAssign(spiritID,sitID) {
 window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
 
 
+
 var tapOn = 0;
 var buttonTimer = [];
 var rateTimer = [];

@@ -1,19 +1,17 @@
 var currentPassage;
 var currentSituation;
-var availableSpirits = [wynn];
+var availableSpirits = [];
 
 var availableSituations = [];
 var spiritButtons = "";
 
-window.onload = loadPassage(0);
+window.onload = loadPassage(11);
 
 function loadPassage(pID) {
     
-    var passageButtonsString = "";
-    
     var pass = findPassageByID(pID);
     
-    // If the passage has special code associated with it, this will execute that code (stored in the "execute" method of a special class)
+    // If the passage has special code associated with it, this will execute that code (the "execute" method of a special class stored in the passages _storyFX property)
     
     if(typeof pass._storyFX != "undefined") {
     
@@ -25,22 +23,31 @@ function loadPassage(pID) {
     
     // Draw the buttons that advance the story passages below the passage text
     
-    for(butt of pass._progressButtons) {
-        
-        // each butt(on) actually holds the whole passage object that the button leads  to -- that's why it can refer to storyID, linkText, etc.
-        
-        passageButtonsString = passageButtonsString + "<button onclick='loadPassage(" + butt._storyID + ")'>" + butt._linkText + "</button>" +"<br>";
-        
-    }
-    
-    document.getElementById("passageButtons").innerHTML = passageButtonsString;
     currentPassage = pass;
+    refreshPassageButtons();
     
     defaultCurrentSit();
     refreshSituationButtons(0);
     refreshRateIndicator();
+    rateRefresh();
     refreshSpiritButtons();
     refreshUnderstanding();
+}
+
+function refreshPassageButtons() {
+    
+    var passageButtonsString = "";
+    
+    for(butt of currentPassage._progressButtons) {
+        
+        // each butt(on) actually holds the whole passage object that the button leads  to -- that's why it can refer to storyID, linkText, etc.
+        
+        passageButtonsString = passageButtonsString + "<button onclick='loadPassage(" + butt._storyID + ")'>" + butt._linkText + "</button>" +"<br><div style='height:9px'></div>";
+        
+    }
+    
+    document.getElementById("passageButtons").innerHTML = passageButtonsString;
+    
 }
 
 
@@ -49,7 +56,7 @@ function refreshSpiritButtons() {
     
     // Only draw the spirit buttons if there are situations to address
     
-    if(availableSituations.length == 0 || typeof availableSituations == "undefined") {
+    if(availableSituations.length == 0 || typeof availableSituations == "undefined" ||availableSpirits.length == 0) {
         return false;
     }
     
@@ -82,34 +89,31 @@ function refreshSpiritButtons() {
             else {
                 
                 spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'><button class='button' onclick='spiritAssign("+spi._id+","+sit._situationID+")'>"+sit._name+"</button> </span>";
-                //compatQuote = "";
                 
             }
             
         }
 
 
-        //spiritButtons = spiritButtons + "<br>" 
-            //+ "<span id='compatQuote"+spi._id + "'>"+compatQuote+"</span>";
         spiritButtons = spiritButtons + "<br><br>";
 
     }
     
     //write the combined string to the page
-    
-    spiritButtons = spiritButtons + "<hr><br>";
+
     
     window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButtons;
 }
 
 function refreshSituationButtons(x) {
     
-    //MAKE A SEPARATE FUNCTION FOR BUTTON CLICKING SEPARATE FROM WHAT NEEDS TO BE UPDATED BY THE TICK
     
+    if(typeof currentSituation == "undefined") {
+        document.getElementById("situationButtons").innerHTML = "";
+        return; 
+    }
     
-    if(typeof currentSituation == "undefined")  {return; }
-    
-    var situationButtons = "<button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span><span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
+    var situationButtons = "<hr><br><button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span> <span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
     
     
 
@@ -123,7 +127,7 @@ function refreshSituationButtons(x) {
         }
         
         else {
-            situationButtons = situationButtons + sit._name + " ";
+            situationButtons = situationButtons + "<u>" + sit._name + "</u> ";
             
         }
         
@@ -165,37 +169,48 @@ function refreshRateIndicator() {
 function refreshUnderstanding(sitID = -1,ldPassage = 0) {
     
     var understandingDisplay = "";
+    var undies = 0; //how many understanding entries are displayed?
     
     if(sitID != -1) {
     
+
         currentSituation = findSituationByID(sitID);
         
     }
     
     if(typeof currentSituation == "undefined") {
         
+        understandingDisplay = "";
+        document.getElementById("understandingDisplay").innerHTML = understandingDisplay;
         return false;
     
     }
     
-    //clearInterval(spiQuoteTimer);
     
     for(und of currentSituation._understandingEntries) {
         
         if(currentSituation._effort >= und._understandingEffort) {
+            
+            undies++;
+            
+            if(und._firstView == true && typeof und._storyFX != "undefined") {
+            
+                und._storyFX.execute();
+                und._firstView = false;
+            
+            }
             
             understandingDisplay = understandingDisplay + und._understandingQuote + "<br><br>";    
             
         }
         
     }
+    
+    if(currentSituation._understandingEntries.length == undies) {
+        currentSituation._understood = true;
+    }
         
-    //refreshSituationButtons();
     document.getElementById("understandingDisplay").innerHTML = understandingDisplay;
-    //refreshSpiritQuotes();
-    //refreshSpiritIcon();
-    //console.log(document.getElementById("understandingDisplay"));
-    //console.log(document.getElementById("spirit" + spi._id + "quote").innerHTML);
     
 
 }
@@ -351,6 +366,7 @@ var tapInterval = 0;
 var tapArray = [];
 var avgTapInterval = 0;
 var timeout;
+var secondsIdle = 0;
 
 function buttonSwitch() {
 
@@ -380,7 +396,11 @@ function buttonSwitch() {
   
 function tapQuoteTimeout() {
     
-    document.getElementById("rateQuote").innerHTML = "";
+    if(typeof currentSituation != "undefined") {
+    
+        document.getElementById("rateQuote").innerHTML = "";
+        
+    }
     
 }
     
@@ -392,9 +412,13 @@ function rateBlink(timerName) {
 
     var blinkReset;
     
+    if(typeof currentSituation == "undefined") {
+        clearInterval(blinkReset);
+        return;
+    }
+    
     
    if(timerName == "buttonClick") {
-       console.log("trig");
         document.getElementById("rateIndicator").style.backgroundColor = "red";
         clearInterval(blinkReset);
         blinkReset = window.setInterval(function(){rateBlink()}, 225);
@@ -430,6 +454,12 @@ function defaultCurrentSit() {
         
     }
     
+    else if(availableSituations.length == 0) {
+        currentSituation = undefined;
+    }
+    
+
+    
 }
 
 function refreshSpiritIcon() {
@@ -464,7 +494,7 @@ function tapController(mode=0) {
     
     //If this was triggered by channeling, add effort to situation based on rate
     
-    if(mode == 2) {
+    if(mode == 2 && typeof currentSituation != "undefined") {
         
     
         for(tapR of currentSituation._tapFX) {
@@ -487,6 +517,10 @@ function tapController(mode=0) {
             }
 
         }
+        
+        // if the player is making headway, we reset the "idle" counter
+        if(tapFX > 0) {secondsIdle = 0;}
+        
         currentSituation._effort = currentSituation._effort + tapFX;
         
     }
@@ -515,23 +549,53 @@ function tapController(mode=0) {
             
         }
         
+        if(avgTapInterval > 0) {
+            secondsIdle++;
+            console.log(secondsIdle);
+        }
+    
+    else {secondsIdle = 0;}
+     
     }
+        
 
     defaultCurrentSit();
-    refreshUnderstanding(currentSituation._situationID);
     
-    if(currentSituation._assignedSpirits.length == 0) {
+    if(typeof currentSituation != "undefined") {
         
-        clearInterval(spiQuoteTimer);
-        
+        refreshUnderstanding(currentSituation._situationID);
+    
+    
+        if(currentSituation._assignedSpirits.length == 0) {
+
+            clearInterval(spiQuoteTimer);
+        }
+    }
+    else if(document.getElementById("understandingDisplay") != "") {
+        document.getElementById("understandingDisplay") = "";
     }
     
-    document.getElementById("rate").innerHTML = avgTapInterval;
+    document.getElementById("rate").innerHTML = avgTapInterval.toFixed(1);
+
+    // if the player hasn't added any effort to the situation in the last 30 seconds and there are still more understanding entries, put up a helpful message
+    if(secondsIdle > 30 && typeof currentSituation != "undefined" && currentSituation._understood == false) {
+        document.getElementById("rate").innerHTML = document.getElementById("rate").innerHTML + " <i>Seems like this rate isn't working out, maybe try refreshing the rate and trying a different channeling frequency?</i>"; 
+    
+    }
+    
     tapQuote = tapQ;
     
-    //Do the spirit quote effect
+    //Do the spirit icon animation
     
     refreshSpiritIcon();
         
+    
+}
+
+//window.setInterval(consol, 100);
+
+function consol() {
+    
+    console.log(currentSituation);
     
 }

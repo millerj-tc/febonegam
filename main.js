@@ -97,6 +97,8 @@ function refreshSpiritButtons() {
     window.onload = document.getElementById("spiritDisplay").innerHTML = spiritButtons;
 }
 
+// should probably separate out channel button and move to top of page above passage so that it doesn't get displaced while clicking/tapping
+
 function refreshSituationButtons(x) {
     
     

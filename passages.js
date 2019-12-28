@@ -130,6 +130,8 @@ class tapRate{
     }
 }
 
+//////// DATA
+
 
 function passageInit() {
 
@@ -159,9 +161,6 @@ function passageInit() {
 
 passageInit();
 
-
-//what if you initiate object with no args, then define later like this? That way you don't need a separate passage mapping section and the classes with more arguments (like Situations) are more readable
-
 passage0._ptext = "You are sitting in a cafe, one you frequent almost every day.<br><br><i>...what always brings you here?...</i>";
 passage0._progressButtons.push(passage1);
 
@@ -173,7 +172,7 @@ passage2._linkText = "Try not to listen";
 passage2._ptext = "\"Did you hear about the massive frostfire that broke out?\"<br>\"Yeah, I can't believe it. People are dying, homes destroyed. It's awful.\""
 passage2._progressButtons.push(passage3);
 
-passage3._linkText = "...";
+passage3._linkText = ". . .";
 passage3._ptext = "<i>You know people talk about this shit, and yet you still show up.</i>";
 passage3._progressButtons.push(passage4);
 

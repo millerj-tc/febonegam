@@ -1,8 +1,9 @@
 .button {
-  background-color: #4CAF50;
-  color: white;
-  min-width: 90px;
-  height: 30px;
+  /*background-color: #4CAF50;*/
+  /*color: white;*/
+  /*min-width: 25%;*/
+  font-size:calc(10px + 1.1vw); 
+  min-height: 5%;
 }
 
 .rateIndicator {
@@ -13,3 +14,8 @@
     display: inline-block;
 }
 
+body {
+    
+    font-size:calc(16px + 1.1vw);
+    
+}

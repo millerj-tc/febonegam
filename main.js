@@ -1,38 +1,31 @@
+//////// GLOBALS
 var currentPassage;
 var currentSituation;
 var availableSpirits = [];
-
 var availableSituations = [];
 var spiritButtons = "";
+var tapOn = 0;
+var buttonTimer = [];
+var rateTimer = [];
+var tapInterval = 0;
+var tapArray = [];
+var avgTapInterval = 0;
+var timeout;
+var secondsIdle = 0;
+var tapQuote = "";
+var spiQuoteTimer;
+
+///////// WINDOW.ONLOAD
 
 window.onload = loadPassage(0);
+window.onload = refreshSpiritButtons();
+window.onload = refreshSituationButtons(0);
+window.onload = refreshUnderstanding();
+window.onload = tapController();
+window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
+window.setInterval(function(){tapController(1)},1000);
 
-function loadPassage(pID) {
-    
-    var pass = findPassageByID(pID);
-    
-    // If the passage has special code associated with it, this will execute that code (the "execute" method of a special class stored in the passages _storyFX property)
-    
-    if(typeof pass._storyFX != "undefined") {
-    
-        pass._storyFX.execute();
-        
-    }
-    
-    document.getElementById("passageDisplay").innerHTML =  pass._ptext;
-    
-    // Draw the buttons that advance the story passages below the passage text
-    
-    currentPassage = pass;
-    refreshPassageButtons();
-    
-    defaultCurrentSit();
-    refreshSituationButtons(0);
-    refreshRateIndicator();
-    rateRefresh();
-    refreshSpiritButtons();
-    refreshUnderstanding();
-}
+//////// DRAWING FUNCTIONS
 
 function refreshPassageButtons() {
     
@@ -42,14 +35,13 @@ function refreshPassageButtons() {
         
         // each butt(on) actually holds the whole passage object that the button leads  to -- that's why it can refer to storyID, linkText, etc.
         
-        passageButtonsString = passageButtonsString + "<button onclick='loadPassage(" + butt._storyID + ")'>" + butt._linkText + "</button>" +"<br><div style='height:9px'></div>";
+        passageButtonsString = passageButtonsString + "<button class='button' onclick='loadPassage(" + butt._storyID + ")'>" + butt._linkText + "</button>" +"<br><div style='height:9px'></div>";
         
     }
     
     document.getElementById("passageButtons").innerHTML = passageButtonsString;
     
 }
-
 
 function refreshSpiritButtons() {
     
@@ -113,7 +105,7 @@ function refreshSituationButtons(x) {
         return; 
     }
     
-    var situationButtons = "<hr><br><button onclick='buttonSwitch()'>Channel</button> <button onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span> <span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
+    var situationButtons = "<hr><br><button class='button' onclick='channelButton()'>Channel</button> <button class='button' onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span> <span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
     
     
 
@@ -145,17 +137,6 @@ function refreshSituationButtons(x) {
 //    }
 //    
 //    console.log(document.getElementById("rateIndicator2").style.backgroundColor);
-}
-
-function sitClick(sitID) {
-    
-    currentSituation = findSituationByID(sitID);
-    refreshRateIndicator();
-    refreshSituationButtons();
-    refreshSpiritQuotes();
-    refreshSpiritIcon();
-    refreshUnderstanding();
-    
 }
 
 function refreshRateIndicator() {
@@ -271,35 +252,81 @@ function refreshSpiritQuotes() {
     
 }
 
-window.onload = refreshSpiritButtons();
-window.onload = refreshSituationButtons(0);
-window.onload = refreshUnderstanding();
-window.onload = tapController();
-
-function findSpiritByID(id) {
-    for(spi of spiritArray) {
-        if(id == spi._id) {
-            return spi;
-        }
-    }
+function rateRefresh() {
+    
+    tapOn = 0;
+    tapArray = [];
+    tapInterval = 0;
+    avgTapInterval = 0;
+    clearInterval(buttonTimer);
+    tapController();
+    
 }
 
-function findPassageByID(id) {
-    for(pass of passageArray) {
-        if(id == pass._storyID) {
-            return pass;
-        }
-    }
+function refreshSpiritIcon() {
+    
+    if(typeof currentSituation == "undefined" || currentSituation._assignedSpirits.length == 0) {return false;}
+    
+    for(spi of currentSituation._assignedSpirits) {
+        
+        var icon;
+        
+        icon = Math.floor(Math.random()*8)
+        
+        if(icon == 0){icon = "<b>~</b>"}
+        if(icon == 1){icon = "<b>+</b>"}
+        if(icon == 2){icon = "<b>&</b>"}
+        if(icon == 3){icon = "<b>*</b>"}
+        if(icon == 4){icon = "<b>{</b>"}
+        if(icon == 5){icon = "<b>?</b>"}
+        if(icon == 6){icon = "<b>#</b>"}
+        if(icon == 7){icon = "<b><</b>"}
+        if(icon == 8){icon = "<b>|</b>"}
+           
+        document.getElementById("spiritIcon"+spi._id).innerHTML = icon;
+           
+       } 
+    
 }
 
-function findSituationByID(id) {
-    for(sit of situationArray) {    
-        if(id == sit._situationID) {    
-            return sit;
-        }
-    }
+//////// PLAYER INTERACTION (CLICK) FUNCTIONS
+
+function sitClick(sitID) {
+    
+    currentSituation = findSituationByID(sitID);
+    refreshRateIndicator();
+    refreshSituationButtons();
+    refreshSpiritQuotes();
+    refreshSpiritIcon();
+    refreshUnderstanding();
+    
 }
 
+function channelButton() {
+
+    rateBlink("buttonClick");
+  
+  if(tapOn == 1) {
+      tapArray.push(tapInterval);
+      tapInterval = 0;
+      for (x of tapArray) {
+          avgTapInterval = avgTapInterval + x;   
+    		}
+      avgTapInterval = avgTapInterval/tapArray.length;
+      //clearInterval(blinkTimer);
+      //blinkTimer = window.setInterval(function(){rateBlink("blinkInterval")},avgTapInterval*1000);
+      //avgTapInterval = 0;
+  }
+    if (tapOn == 0) {
+      tapOn = 1;
+      buttonTimer = window.setInterval(setRate, 100);
+      }
+    
+    tapController(2);
+    document.getElementById("rateQuote").innerHTML = tapQuote;
+    clearTimeout(timeout);
+    timeout = window.setTimeout(tapQuoteTimeout, 3125);
+}
 
 function spiritRecall(spiID){
     
@@ -318,8 +345,6 @@ function spiritRecall(spiID){
             
     
 }
-
-var spiQuoteTimer;
 
 function spiritAssign(spiritID,sitID) {
   
@@ -356,144 +381,13 @@ function spiritAssign(spiritID,sitID) {
     refreshSpiritQuotes();  
 }
 
-window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
-
-
-
-var tapOn = 0;
-var buttonTimer = [];
-var rateTimer = [];
-var tapInterval = 0;
-var tapArray = [];
-var avgTapInterval = 0;
-var timeout;
-var secondsIdle = 0;
-
-function buttonSwitch() {
-
-    rateBlink("buttonClick");
-  
-  if(tapOn == 1) {
-      tapArray.push(tapInterval);
-      tapInterval = 0;
-      for (x of tapArray) {
-          avgTapInterval = avgTapInterval + x;   
-    		}
-      avgTapInterval = avgTapInterval/tapArray.length;
-      //clearInterval(blinkTimer);
-      //blinkTimer = window.setInterval(function(){rateBlink("blinkInterval")},avgTapInterval*1000);
-      //avgTapInterval = 0;
-  }
-    if (tapOn == 0) {
-      tapOn = 1;
-      buttonTimer = window.setInterval(setRate, 100);
-      }
-    
-    tapController(2);
-    document.getElementById("rateQuote").innerHTML = tapQuote;
-    clearTimeout(timeout);
-    timeout = window.setTimeout(tapQuoteTimeout, 3125);
-}
-  
-function tapQuoteTimeout() {
-    
-    if(typeof currentSituation != "undefined") {
-    
-        document.getElementById("rateQuote").innerHTML = "";
-        
-    }
-    
-}
-    
- function setRate() {
-      tapInterval = tapInterval + .1;      
-  }
-
-function rateBlink(timerName) {
-
-    var blinkReset;
-    
-    if(typeof currentSituation == "undefined") {
-        clearInterval(blinkReset);
-        return;
-    }
-    
-    
-   if(timerName == "buttonClick") {
-        document.getElementById("rateIndicator").style.backgroundColor = "red";
-        clearInterval(blinkReset);
-        blinkReset = window.setInterval(function(){rateBlink()}, 225);
-    }
-    else {
-        clearInterval(blinkReset);
-        document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
-    }
-    
-
-}
-
-function rateRefresh() {
-    
-    tapOn = 0;
-    tapArray = [];
-    tapInterval = 0;
-    avgTapInterval = 0;
-    clearInterval(buttonTimer);
-    tapController();
-    
-}
-
-window.setInterval(function(){tapController(1)},1000);
-
-var tapQuote = "";
-
-function defaultCurrentSit() {
-    
-    if(typeof currentSituation == "undefined" && availableSituations.length > 0) {
-        
-        currentSituation = availableSituations[0];
-        
-    }
-    
-    else if(availableSituations.length == 0) {
-        currentSituation = undefined;
-    }
-    
-
-    
-}
-
-function refreshSpiritIcon() {
-    
-    if(typeof currentSituation == "undefined" || currentSituation._assignedSpirits.length == 0) {return false;}
-    
-    for(spi of currentSituation._assignedSpirits) {
-        
-        var icon;
-        
-        icon = Math.floor(Math.random()*8)
-        
-        if(icon == 0){icon = "<b>~</b>"}
-        if(icon == 1){icon = "<b>+</b>"}
-        if(icon == 2){icon = "<b>&</b>"}
-        if(icon == 3){icon = "<b>*</b>"}
-        if(icon == 4){icon = "<b>{</b>"}
-        if(icon == 5){icon = "<b>?</b>"}
-        if(icon == 6){icon = "<b>#</b>"}
-        if(icon == 7){icon = "<b><</b>"}
-        if(icon == 8){icon = "<b>|</b>"}
-           
-        document.getElementById("spiritIcon"+spi._id).innerHTML = icon;
-           
-       } 
-    
-}
+//////// CONTINUOUS GAME FLOW (TICK FUNCTIONS)
 
 function tapController(mode=0) {
     
     var tapQ = "";
     
-    //If this was triggered by channeling, add effort to situation based on rate
+    //If this was triggered by channeling (mode == 2), add effort to situation based on rate
     
     if(mode == 2 && typeof currentSituation != "undefined") {
         
@@ -552,15 +446,18 @@ function tapController(mode=0) {
         
         if(avgTapInterval > 0) {
             secondsIdle++;
-            console.log(secondsIdle);
         }
     
     else {secondsIdle = 0;}
      
     }
-        
+    
+    
+    // If currentSituation is undefined, pick the first one from the availableSituation array    
 
     defaultCurrentSit();
+    
+    // Update the understanding entries for the current situation
     
     if(typeof currentSituation != "undefined") {
         
@@ -576,9 +473,12 @@ function tapController(mode=0) {
         document.getElementById("understandingDisplay") = "";
     }
     
+    // Display the current channeling rate (displayed as average number of seconds between taps/clicks)
+    
     document.getElementById("rate").innerHTML = avgTapInterval.toFixed(1);
 
     // if the player hasn't added any effort to the situation in the last 30 seconds and there are still more understanding entries, put up a helpful message
+    
     if(secondsIdle > 30 && typeof currentSituation != "undefined" && currentSituation._understood == false) {
         document.getElementById("rate").innerHTML = document.getElementById("rate").innerHTML + " <i>Seems like this rate isn't working out, maybe try refreshing the rate and trying a different channeling frequency?</i>"; 
     
@@ -593,10 +493,114 @@ function tapController(mode=0) {
     
 }
 
-//window.setInterval(consol, 100);
-
-function consol() {
+function tapQuoteTimeout() {
     
-    console.log(currentSituation);
+    if(typeof currentSituation != "undefined") {
+    
+        document.getElementById("rateQuote").innerHTML = "";
+        
+    }
     
 }
+    
+function setRate() {
+      tapInterval = tapInterval + .1;      
+  }
+
+function rateBlink(timerName) {
+
+    var blinkReset;
+    
+    if(typeof currentSituation == "undefined") {
+        clearInterval(blinkReset);
+        return;
+    }
+    
+    
+   if(timerName == "buttonClick") {
+        document.getElementById("rateIndicator").style.backgroundColor = "red";
+        clearInterval(blinkReset);
+        blinkReset = window.setInterval(function(){rateBlink()}, 225);
+    }
+    else {
+        clearInterval(blinkReset);
+        document.getElementById("rateIndicator").style.backgroundColor = "darkturquoise";
+    }
+    
+
+}
+
+//////// ON-CALL GAME FLOW
+
+function loadPassage(pID) {
+    
+    var pass = findPassageByID(pID);
+    
+    // If the passage has special code associated with it, this will execute that code (the "execute" method of a special class stored in the passages _storyFX property)
+    
+    if(typeof pass._storyFX != "undefined") {
+    
+        pass._storyFX.execute();
+        
+    }
+    
+    document.getElementById("passageDisplay").innerHTML =  pass._ptext;
+    
+    // Draw the buttons that advance the story passages below the passage text
+    
+    currentPassage = pass;
+    refreshPassageButtons();
+    
+    defaultCurrentSit();
+    refreshSituationButtons(0);
+    refreshRateIndicator();
+    rateRefresh();
+    refreshSpiritButtons();
+    refreshUnderstanding();
+}
+
+//////// UTILITY FUNCTIONS (CLASS  FINDERS, ETC.)
+
+function defaultCurrentSit() {
+    
+    if(typeof currentSituation == "undefined" && availableSituations.length > 0) {
+        
+        currentSituation = availableSituations[0];
+        
+    }
+    
+    else if(availableSituations.length == 0) {
+        currentSituation = undefined;
+    }
+    
+
+    
+}
+
+function findSpiritByID(id) {
+    for(spi of spiritArray) {
+        if(id == spi._id) {
+            return spi;
+        }
+    }
+}
+
+function findPassageByID(id) {
+    for(pass of passageArray) {
+        if(id == pass._storyID) {
+            return pass;
+        }
+    }
+}
+
+function findSituationByID(id) {
+    for(sit of situationArray) {    
+        if(id == sit._situationID) {    
+            return sit;
+        }
+    }
+}
+
+
+
+

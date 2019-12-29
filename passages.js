@@ -30,12 +30,13 @@ class Passage {
 //SPIRITS
 var spiritArray = [];
 class Spirit {
-    constructor(spiritID, name, easyQuotes, mediumQuotes, hardQuotes, sitAssignment = "unassigned"){
-        this._id = spiritID;
+    constructor(name, easyQuotes, mediumQuotes, hardQuotes, spiritID, sitAssignment = "unassigned"){
+
         this._name = name;
         this._easyQuotes = easyQuotes;
         this._mediumQuotes = mediumQuotes;
         this._hardQuotes = hardQuotes;
+        this._id = spiritArray.length;
         this._sitAssignment = sitAssignment; //assignment is situation object
         
         

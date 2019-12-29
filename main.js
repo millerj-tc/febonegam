@@ -17,7 +17,7 @@ var spiQuoteTimer;
 
 ///////// WINDOW.ONLOAD
 
-window.onload = loadPassage(8);
+window.onload = loadPassage(6);
 window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();
@@ -102,11 +102,12 @@ function refreshSituationButtons(x) {
     
     
     if(typeof currentSituation == "undefined") {
+         document.getElementById("channelDisplay").innerHTML = "";
         document.getElementById("situationButtons").innerHTML = "";
         return; 
     }
     
-    var situationButtons = "<hr><br><button class='button' onclick='channelButton()'>Channel</button> <button class='button' onclick='rateRefresh()'>Refresh</button> <span id='rateIndicator' class='rateIndicator'></span> <span id='rate'></span><br><br><span id='rateQuote'></span><hr><br>";
+    var situationButtons = "<hr><br>";
     
     
 
@@ -128,16 +129,9 @@ function refreshSituationButtons(x) {
     }
     
     
+    document.getElementById("channelDisplay").innerHTML = "<button class='channelButton' onclick='channelButton()'>Channel</button><br><div style='height:.5%'></div><button class='refreshButton' onclick='rateRefresh()'>Refresh</button><br><div style='height:.5%'></div><span id='rateIndicator' class='rateIndicator'></span><br><div style='height:.5%'></div><span id='rate'></span><br><br><span id='rateQuote'></span>";
     document.getElementById("situationButtons").innerHTML = situationButtons;
-    
-//    if(x == 0) {
-//
-//        console.log('set');
-//        document.getElementById("rateIndicator2").style.backgroundColor = "darkturquoise";
-//        
-//    }
-//    
-//    console.log(document.getElementById("rateIndicator2").style.backgroundColor);
+
 }
 
 function refreshRateIndicator() {

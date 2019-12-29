@@ -237,7 +237,7 @@ passage6._storyFX = new p6FX;
 frostfire = new Situation("Frostfire");
 frostfire._understandingEntries.push(new understandingEntry(0,0,"There is a fire in your chest. You must keep drawing.", 5));
 frostfire._understandingEntries.push(new understandingEntry(0,1,"Your shoulders start to relax.", 10));
-frostfire._understandingEntries.push(new understandingEntry(0,2,"You complete the figure. The pressure is gone. You feel a presence over your shoulder.", 15));
+frostfire.UE("You complete the figure. The pressure is gone. You feel a presence over your shoulder.", 15);
 class uFX0 {
     constructor(){}
     execute(){

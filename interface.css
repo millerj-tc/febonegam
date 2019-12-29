@@ -2,9 +2,35 @@
   /*background-color: #4CAF50;*/
   /*color: white;*/
   /*min-width: 25%;*/
-  font-size:calc(10px + 1.1vw); 
+  font-size:calc(10px + 1.1vw);
   min-height: 5%;
   touch-action: manipulation;
+}
+
+.channelDisplay {
+    float:left;
+    padding-right: 2%;
+    width: 25%;
+    max-width: 150px;
+    display: inline-block;
+}
+
+.channelButton {
+    height: 20%;
+    width: 100%;
+    max-width: 100%;
+    touch-action: manipulation;
+}
+
+.refreshButton {
+    height: 8%;
+    width: 100%;
+    max-width: 100%;
+    touch-action: manipulation;
+}
+
+.understandingDisplay {
+    position:relative;
 }
 
 .rateIndicator {
@@ -13,6 +39,7 @@
     background-color: darkturquoise;
     border-radius: 50%;
     display: inline-block;
+    align-content: center;
 }
 
 body {

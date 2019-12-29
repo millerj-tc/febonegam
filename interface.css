@@ -4,6 +4,7 @@
   /*min-width: 25%;*/
   font-size:calc(10px + 1.1vw); 
   min-height: 5%;
+  touch-action: manipulation;
 }
 
 .rateIndicator {

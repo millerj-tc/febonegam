@@ -1,5 +1,7 @@
 //PASSAGES
 var passageArray = [];
+var p; //for writing on mobile, can set to a passage
+
 class Passage {
     constructor(passageStoryID, linkText, passageText, passageLinks = [], storyFX) {
         
@@ -10,21 +12,19 @@ class Passage {
         this._storyFX = storyFX;
         passageArray.push(this);
         }
-    get storyID() {
-        return this._storyID;
+    //for writing on mobile
+    LT(text) {
+        this._linkText = text;
     }
-    get ptext() {
-        return this._ptext;
+    PT(text) {
+        this._ptext = text;
     }
-    set ptext(x) {
-        this._ptext = x;
+    PB() {
+        for (var i = 0; i < arguments.length; i++) {
+            this._progressButtons.push(arguments[i]);
+        }
     }
-    get passageLinks() {
-        return this._passageLinks;
-    }
-    set passageLinks(x) {
-        this._passageLinks = x;
-    }
+    
 }
 
 //SPIRITS
@@ -322,11 +322,19 @@ class p12FX {
 }
 passage12._storyFX = new p12FX;
 
-passage13._ptext = "A dark alley."
+p = passage13;
+p.PT("A dark alley.");
 class p13FX {
     constructor(){}
     execute(){
         availableSituations = availableSituations.filter(x => x!= thestreet);
     }
 }
-passage13._storyFX = new p13FX;
+p._storyFX = new p13FX;
+p.PB(passage14, passage15);
+
+p = passage14;
+p.LT("Test One");
+
+p = passage15;
+p.LT("Test Two");

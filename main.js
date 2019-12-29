@@ -22,7 +22,6 @@ window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();
 window.onload = tapController();
-window.onload = document.getElementById("passageDisplay").innerHTML = currentPassage.ptext;
 window.setInterval(function(){tapController(1)},1000);
 
 //////// DRAWING FUNCTIONS
@@ -546,11 +545,11 @@ function loadPassage(pID) {
         
     }
     
+    currentPassage = pass;
     document.getElementById("passageDisplay").innerHTML =  pass._ptext;
     
     // Draw the buttons that advance the story passages below the passage text
     
-    currentPassage = pass;
     refreshPassageButtons();
     
     defaultCurrentSit();

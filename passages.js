@@ -44,9 +44,14 @@ class Spirit {
     }
 }
 
-wynn = new Spirit(0,"Wynn", ["No problem!"], ["I can handle it!...I think.", "I've got a strong idea! We'll see how it works out."], ["This is wearing me down..."]);
-aragorn = new Spirit(1,"Aragorn", ["I'm the right warrior for the job!", "Pray, a harder task next time", "Done in a jiff"]);
-gandalf = new Spirit(2,"Gandalf");
+wynn = new Spirit("Wynn", ["No problem!"], ["I can handle it!...I think.", "I've got a strong idea! We'll see how it works out."], ["This is wearing me down..."]);
+broxa = new Spirit("Broxa");
+willowisp = new Spirit("Will-O'-Wisp");
+trixie = new Spirit("Trixie");
+genesis = new Spirit("Genesis");
+wolfprincess = new Spirit("The Wolf Princess");
+crush = new Spirit("Crush");
+
 
 //SITUATIONS
 var situationArray = [];
@@ -368,7 +373,7 @@ class p12FX {
 passage12._storyFX = new p12FX;
 
 p = passage13;
-p.PT("A dark alley.");
+p.PT("As you enter the alley, something hits you in the back of the head.");
 class p13FX {
     constructor(){}
     execute(){
@@ -376,10 +381,17 @@ class p13FX {
     }
 }
 p._storyFX = new p13FX;
-p.PB(passage14, passage15);
+p.PB(passage14);
 
 p = passage14;
-p.LT("Test One");
-
-p = passage15;
-p.LT("Test Two");
+p.LT(". . . fall . . .");
+p.PT("<i>you feel things moving inside you<br><br>   ...inside your soul</i>")
+emptySit = new Situation("");
+class p14FX {
+    constructor(){}
+    execute(){
+        availableSpirits = [wynn, broxa, willowisp, crush, wolfprincess, genesis, trixie];
+        availableSituations.push(emptySit);
+    }
+}
+p._storyFX = new p14FX;

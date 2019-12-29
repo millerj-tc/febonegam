@@ -17,7 +17,7 @@ var spiQuoteTimer;
 
 ///////// WINDOW.ONLOAD
 
-window.onload = loadPassage(11);
+window.onload = loadPassage(14);
 window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();
@@ -257,6 +257,8 @@ function rateRefresh() {
     tapOn = 0;
     tapArray = [];
     tapInterval = 0;
+    tapQuote = "";
+    document.getElementById("rateQuote").innerHTML = "";
     avgTapInterval = 0;
     clearInterval(buttonTimer);
     tapController();

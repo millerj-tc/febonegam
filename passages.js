@@ -210,11 +210,20 @@ passage4._progressButtons.push(passage6);
 
 passage5._linkText = "Resist...";
 class p5FX {
-    constructor(){}
+    constructor(){
+        this._i = -1;
+    }
     
     execute() {
         
-        var pickQuote = Math.floor(Math.random()*3);
+        var pickQuote;
+        this._i++;
+        
+        if(this._i > 2) {
+            this._i = 0;
+            pickQuote = 0;
+        }
+        else{pickQuote = this._i;}
         
         if(pickQuote == 0) {passage5._ptext = "You can feel it in your teeth.";}
         if(pickQuote == 1) {passage5._ptext = "It's not like it hurts anyone...";}
@@ -306,11 +315,20 @@ passage10._progressButtons.push(passage11);
 
 passage11._linkText = "Stay in your seat";
 class p11FX {
-    constructor(){}
+    constructor(){
+        this._i = -1;
+    }
     
     execute() {
         
-        var pickQuote = Math.floor(Math.random()*4);
+        var pickQuote;
+        this._i++;
+        
+        if(this._i > 3) {
+            this._i = 0;
+            pickQuote = 0;
+        }
+        else{pickQuote = this._i;}
         
         if(pickQuote == 0) {passage11._ptext = "<i>She feels this too?</i>";}
         if(pickQuote == 1) {passage11._ptext = "<i>\"Everyone?\"</i>";}

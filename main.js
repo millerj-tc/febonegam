@@ -17,7 +17,7 @@ var spiQuoteTimer;
 
 ///////// WINDOW.ONLOAD
 
-window.onload = loadPassage(6);
+window.onload = loadPassage(11);
 window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();
@@ -547,6 +547,8 @@ function loadPassage(pID) {
     
     refreshPassageButtons();
     
+    tapQuote = "";
+    document.getElementById("rateQuote").innerHTML = "";
     defaultCurrentSit();
     refreshSituationButtons(0);
     refreshRateIndicator();

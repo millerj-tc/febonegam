@@ -129,7 +129,9 @@ function refreshSituationButtons(x) {
     }
     
     
-    document.getElementById("channelDisplay").innerHTML = "<button class='channelButton' onclick='channelButton()'>Channel</button><br><div style='height:.5%'></div><button class='refreshButton' onclick='rateRefresh()'>Refresh</button><br><div style='height:.5%'></div><span id='rateIndicator' class='rateIndicator'></span><br><div style='height:.5%'></div><span id='rate'></span><br><br><span id='rateQuote'></span>";
+    document.getElementById("channelDisplay").innerHTML = "<button class='channelButton' onclick='channelButton()'>Channel</button><br><div style='height:.5%'></div><button class='refreshButton' onclick='rateRefresh()'>Refresh</button><br><div style='height:.5%'></div><span id='rateIndicator' class='rateIndicator'></span><br><div style='height:.5%'></div><span id='rate'></span>";
+    
+    //<br><br><span id='rateQuote'></span>";
     document.getElementById("situationButtons").innerHTML = situationButtons;
 
 }
@@ -161,6 +163,9 @@ function refreshUnderstanding(sitID = -1,ldPassage = 0) {
         return false;
     
     }
+//    else {
+//        understandingDisplay = "<span style='font-weight:bold' id='rateQuote'></span><br><hr>";
+//    }
     
     
     for(und of currentSituation._understandingEntries) {
@@ -308,6 +313,31 @@ function channelButton() {
           avgTapInterval = avgTapInterval + x;   
     		}
       avgTapInterval = avgTapInterval/tapArray.length;
+      for(tapR of currentSituation._tapFX) {
+
+
+            if(avgTapInterval <= tapR._rateMin && avgTapInterval >= tapR._rateMax) {
+
+                tapFX = tapR._effort;
+                tapQuote = tapR._tapQuote;
+                break;
+
+
+            }
+
+            else {
+
+                tapFX = 0;
+                tapQuote = "";
+
+            }
+
+        }
+        
+        // if the player is making headway, we reset the "idle" counter
+        if(tapFX > 0) {secondsIdle = 0;}
+        
+        currentSituation._effort = currentSituation._effort + tapFX;
       //clearInterval(blinkTimer);
       //blinkTimer = window.setInterval(function(){rateBlink("blinkInterval")},avgTapInterval*1000);
       //avgTapInterval = 0;
@@ -318,7 +348,9 @@ function channelButton() {
       }
     
     tapController(2);
-    document.getElementById("rateQuote").innerHTML = tapQuote;
+    if(tapQuote != "") {
+        document.getElementById("rateQuote").innerHTML = tapQuote + "<br><hr>";
+    }
     clearTimeout(timeout);
     timeout = window.setTimeout(tapQuoteTimeout, 3125);
 }
@@ -382,39 +414,6 @@ function tapController(mode=0) {
     
     var tapQ = "";
     
-    //If this was triggered by channeling (mode == 2), add effort to situation based on rate
-    
-    if(mode == 2 && typeof currentSituation != "undefined") {
-        
-    
-        for(tapR of currentSituation._tapFX) {
-
-
-            if(avgTapInterval <= tapR._rateMin && avgTapInterval >= tapR._rateMax) {
-
-                tapFX = tapR._effort;
-                tapQ = tapR._tapQuote;
-                break;
-
-
-            }
-
-            else {
-
-                tapFX = 0;
-                tapQ = "";
-
-            }
-
-        }
-        
-        // if the player is making headway, we reset the "idle" counter
-        if(tapFX > 0) {secondsIdle = 0;}
-        
-        currentSituation._effort = currentSituation._effort + tapFX;
-        
-    }
-    
     // If this was triggered by the regular interval, update each situation's effort based on the spirits assigned to it.
     
     if(availableSituations.length == 0 || typeof availableSituations == "undefined") {    
@@ -475,11 +474,12 @@ function tapController(mode=0) {
     // if the player hasn't added any effort to the situation in the last 30 seconds and there are still more understanding entries, put up a helpful message
     
     if(secondsIdle > 30 && typeof currentSituation != "undefined" && currentSituation._understood == false) {
-        document.getElementById("rate").innerHTML = document.getElementById("rate").innerHTML + " <i>Seems like this rate isn't working out, maybe try refreshing the rate and trying a different channeling frequency?</i>"; 
+        document.getElementById("rateQuote").innerHTML = document.getElementById("rateQuote").innerHTML + " <i>Seems like this rate isn't working out, maybe try refreshing the rate and trying a different channeling frequency?</i>"; 
     
     }
     
-    tapQuote = tapQ;
+
+    //tapQuote = tapQ;
     
     //Do the spirit icon animation
     
@@ -492,6 +492,7 @@ function tapQuoteTimeout() {
     
     if(typeof currentSituation != "undefined") {
     
+        tapQuote = "";
         document.getElementById("rateQuote").innerHTML = "";
         
     }

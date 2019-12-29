@@ -82,6 +82,32 @@ class Situation {
       }
         
     }
+    
+    //will use this to clean up data code
+    
+    UE(text,effortFloor) {
+        
+       var ue = new understandingEntry;
+       ue._situationID = this._situationID;
+       ue._understandingID = this._understandingEntries.length;
+       ue._understandingQuote = text;
+       ue._understandingEffort = effortFloor;
+       this._understandingEntries.push(ue);
+        
+    }
+    
+    TFX(rateMin,rateMax,tapQuote, effort) {
+        
+        var tfx = new tapRate;
+        tfx._situationID = this._situationID;
+        tfx._rateMin = rateMin;
+        tfx._rateMax = rateMax;
+        tfx._tapQuote = tapQuote;
+        tfx._effort = effort;
+        this._tapFX.push(tfx);
+        
+        
+    }
 }
 
 //Spirit Compat(abilty) is a class whose properties describe how well any given spirit contributes to the situation -- both in terms of player feedback and effort.
@@ -259,7 +285,7 @@ class uFXpaper3 {
 }
 paper._understandingEntries[2]._storyFX = new uFXpaper3;
 paper._tapFX.push(new tapRate(paper._situationID, 5,2.5, "Your thoughts are at a halt.", 0));
-paper._tapFX.push(new tapRate(paper._situationID, 2.4, 1.7, "You gather your thoughts, but you'll have to spit them out.", 0));
+paper.TFX(2.4, 1.7, "You gather your thoughts, but you'll have to spit them out.", 0);
 paper._tapFX.push(new tapRate(paper._situationID, 1.6, .01, "You push your hair out of your face and give an apologetic smile as you speak.", 1));
 
 

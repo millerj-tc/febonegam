@@ -17,7 +17,7 @@ var spiQuoteTimer;
 
 ///////// WINDOW.ONLOAD
 
-window.onload = loadPassage(0);
+window.onload = loadPassage(8);
 window.onload = refreshSpiritButtons();
 window.onload = refreshSituationButtons(0);
 window.onload = refreshUnderstanding();

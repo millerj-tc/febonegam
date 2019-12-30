@@ -7,6 +7,11 @@
   touch-action: manipulation;
 }
 
+.spiritButton {
+    min-height: 3.1%;
+    min-width: 7%;
+}
+
 .channelDisplay {
     float:left;
     padding-right: 2%;

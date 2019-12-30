@@ -61,7 +61,7 @@ function refreshSpiritButtons() {
         // ...write the spirit's name, then a "recall" button to take them off whatever situation they are assigned to...
         
 
-        spiritButtons = spiritButtons + spi._name + " " + "<button id='recall' class='button' onclick='spiritRecall("+spi._id+")'>Recall</button> ";
+        spiritButtons = spiritButtons + spi._name + " " + "<button id='recall' class='spiritButton' onclick='spiritRecall("+spi._id+")'>Recall</button> ";
 
         //...and make a button to assign them to any of the currently available situations (unless they are already assigned to that situation)
         
@@ -79,7 +79,7 @@ function refreshSpiritButtons() {
             
             else {
                 
-                spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'><button class='button' onclick='spiritAssign("+spi._id+","+sit._situationID+")'>"+sit._name+"</button> </span>";
+                spiritButtons = spiritButtons + "<span id='spanSpiButt"+spi._id+sit._situationID+"'><button class='spiritButton' onclick='spiritAssign("+spi._id+","+sit._situationID+")'>"+sit._name+"</button> </span>";
                 
             }
             
